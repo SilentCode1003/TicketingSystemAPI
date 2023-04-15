@@ -8,6 +8,7 @@ const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoDBSession = require('connect-mongodb-session')(session);
+const mysql = require('./routes/repository/ticketingdb');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -46,6 +47,9 @@ app.use(
     store: store
   })
 );
+
+//Check SQL Connection
+mysql.CheckConnection();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

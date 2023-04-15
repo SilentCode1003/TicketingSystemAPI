@@ -8,7 +8,7 @@ crypt.Decrypter(process.env._PASSWORD, (err, result) => {
     if (err) throw err;
 
     password = result;
-    console.log(`${result}`);
+    // console.log(`${result}`);
 });
 
 
@@ -18,6 +18,16 @@ const connection = mysql.createConnection({
     password: password,
     database: process.env._DATABASE
 });
+
+exports.CheckConnection = () => {
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connection to MYSQL databases: ', err);
+            return;
+        }
+        console.log('MySQL database connection established successfully!');
+    });
+}
 
 exports.InsertMultiple = async (stmt, todos) => {
     try {
