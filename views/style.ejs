@@ -1,0 +1,195 @@
+<style>
+    .topbar {
+        background: linear-gradient(to right, #cc0000 20%, #000000 80%);
+    }
+
+    .sidebar {
+        background: linear-gradient(to left, #cc0000 20%, #000000 80%);
+    }
+
+    footer {
+        background: linear-gradient(to right, #cc0000 20%, #000000 80%);
+    }
+
+    /* LOADER */
+    .loader {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        position: relative;
+        border: 4px solid #Fff;
+        animation: loader 2s infinite ease;
+    }
+
+    .loader-wrapper {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #669999;
+        opacity: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loader-inner {
+        vertical-align: top;
+        display: inline-block;
+        width: 100%;
+        background-color: #fff;
+        animation: loader-inner 2s infinite ease-in;
+    }
+
+    @keyframes loader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(180deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes loader-inner {
+        0% {
+            height: 0%;
+        }
+
+        25% {
+            height: 0%;
+        }
+
+        50% {
+            height: 100%;
+        }
+
+        75% {
+            height: 100%;
+        }
+
+        100% {
+            height: 0%;
+        }
+    }
+
+    /* END LOADER */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: #000000;
+        color: #ffffff;
+        text-align: center;
+
+    }
+
+    tbody {
+        background: #ffffff;
+        color: #000000;
+        text-align: left;
+    }
+
+    hr {
+        border: 0.2em solid #cc0000;
+        border-radius: 60px;
+    }
+
+    table,
+    th,
+    td {
+        border: 2px solid #4e4c4c;
+        flex-wrap: wrap;
+    }
+
+    table td.shrink {
+        white-space: nowrap
+    }
+
+    table td.expand {
+        width: 99%
+    }
+
+    tr:hover {
+        background-color: #cc0000;
+        color: #ffffff;
+        border: 1px solid #000000;
+    }
+
+    .login-img {
+        width: 100%;
+        height: 100%;
+        border: 4px solid black;
+        border-radius: 30%;
+    }
+
+    .login {
+        background: linear-gradient(to top, #000000 60%, #cc0000 80%);
+        color: white;
+    }
+
+    .login-container {
+        background: linear-gradient(to top, #000000 0%, #cc0000 80%);
+    }
+
+    button {
+        display: inline-block;
+        background: #000000;
+        width: 60%;
+        height: 45px;
+        color: white;
+        border-radius: 8px;
+        font-size: larger;
+    }
+
+    button:hover {
+        background-color: #dddd;
+        color: #000000;
+    }
+
+    input {
+        width: auto;
+    }
+
+    .entry-area {
+        background: #cc0000;
+        padding: 5px 5px;
+        position: flex;
+        padding-left: 1em;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        display: flex;
+        justify-content: center;
+    }
+
+    .table-button {
+        position: flex;
+        padding-top: .6em;
+        padding-bottom: .5em;
+        display: flex;
+        justify-content: center;
+    }
+
+    .entry-input {
+        text-align: center;
+        width: 80%;
+        font-size: larger;
+        font-weight: 400;
+    }
+</style>

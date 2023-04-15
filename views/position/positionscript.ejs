@@ -1,0 +1,89 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+
+        $(document).on('click', '#addBtn', function () {
+            let positionname = $('#positionname').val();
+
+            console.log(positionname);
+
+            $.ajax({
+                type: 'POST',
+                url: '/position/save',
+                data: {
+                    positionname: positionname
+                },
+                success: function (result) {
+                    LoadTable();
+                    success('Saved', 'Successfully')
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        })
+
+
+        function LoadTable() {
+            $('#position-table').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 400,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/position/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button class="assign-btn" id="approvedBtn" name="approvedBtn">APPROVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button class="approve-btn" id="printBtn" name="printBtn">PRINT</button>'
+                            }
+
+                            finalData.push({
+                                positioncode: item.positioncode,
+                                positionname: item.positionname,
+                                status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
+                                action: action,
+                            })
+
+                        })
+
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'positioncode' },
+                    { data: 'positionname' },
+                    { data: 'status' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                    hideloader();
+                }
+            });
+        }
+    })
+</script>

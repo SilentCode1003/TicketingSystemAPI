@@ -1,0 +1,117 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+        LoadList();
+
+        $(document).on('click', '#addBtn', function () {
+            let fullname = $('#fullname').val();
+            let username = $('#username').val();
+            let password = $('#password').val();
+            let rolelist = $('#rolelist').val();
+            let positionlist = $('#positionlist').val();
+
+            console.log(fullname);
+        })
+
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/roles/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.rolename, item.rolename);
+                        $(options).html(item.rolename);
+                        $('#rolelist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/position/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.positionname, item.positionname);
+                        $(options).html(item.positionname);
+                        $('#positionlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        }
+
+        function LoadTable() {
+            $('#users-table').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 400,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/users/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button class="assign-btn" id="approvedBtn" name="approvedBtn">APPROVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button class="approve-btn" id="printBtn" name="printBtn">PRINT</button>'
+                            }
+
+                            finalData.push({
+                                status: item.status,
+                                action: action,
+                            })
+
+                        })
+
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'userid' },
+                    { data: 'fullname' },
+                    { data: 'username' },
+                    { data: 'password' },
+                    { data: 'role' },
+                    { data: 'position' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'status' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                    hideloader();
+                }
+            });
+        }
+    })
+</script>
