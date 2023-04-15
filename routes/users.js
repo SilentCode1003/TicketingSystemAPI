@@ -58,31 +58,40 @@ router.post('/save', (req, res) => {
   try {
     let fullname = req.body.fullname;
     let username = req.body.username;
-    let password = crypt.Encrypter(req.body.password);
-    let role = req.body.role;
-    let position = req.body.position;
+    let password = req.body.password;
+    let role = req.body.rolelist;
+    let position = req.body.positionlist;
     let status = dictionary.GetValue(dictionary.ACT());
-    let createdby = req.session.username;
+    let createdby = 'CREATOR';
     let createdate = helper.GetCurrentDatetime();
     let data = [];
 
-    data.push([
-      fullname,
-      username,
-      password,
-      role,
-      position,
-      status,
-      createdby,
-      createdate
-    ])
+    crypt.Encrypter(password, (err, result) => {
+      if (err) console.error('Encryption Error: ', err);
 
+      console.log(result)
+
+      data.push([
+        fullname,
+        username,
+        result,
+        role,
+        position,
+        status,
+        createdby,
+        createdate
+      ])
+    })
+
+    console.log(data);
     mysql.InsertTable('master_user', data, (err, result) => {
       if (err) {
         return res.json({
           msg: err
         })
       }
+
+      console.log(result);
 
       res.json({
         msg: 'success'

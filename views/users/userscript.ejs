@@ -10,9 +10,25 @@
             let rolelist = $('#rolelist').val();
             let positionlist = $('#positionlist').val();
 
-            console.log(fullname);
+            $.ajax({
+                type: 'POST',
+                url: '/users/save',
+                data: {
+                    fullname: fullname,
+                    username: username,
+                    password: password,
+                    rolelist: rolelist,
+                    positionlist: positionlist,
+                },
+                success: function (result) {
+                    LoadTable();
+                    success('Saved', 'Successfully')
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
         })
-
 
         function LoadList() {
             $.ajax({
@@ -82,7 +98,15 @@
                             }
 
                             finalData.push({
+                                userid: item.userid,
+                                fullname: item.fullname,
+                                username: item.username,
+                                password: item.password,
+                                role: item.role,
+                                position: item.position,
                                 status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
                                 action: action,
                             })
 
