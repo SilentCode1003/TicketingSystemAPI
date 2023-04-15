@@ -20,11 +20,11 @@
                             location.replace("/");
                         }
                         else {
-                            error('ID & Password not match...');
+                            errormsg('ID & Password not match...');
                         }
                     },
                     error: function (result) {
-                        error(result.msg);
+                        errormsg(result.msg);
                     }
                 });
             }
@@ -45,14 +45,15 @@
                     console.log(result);
                     if (result.msg == 'success') {
                         success('Login', 'Login successfully...')
-                        location.replace("/");
+
+                        console.log(result.data);
                     }
                     else {
-                        error('ID & Password not match...');
+                        errormsg('ID & Password not match...');
                     }
                 },
                 error: function (result) {
-                    error(result.msg);
+                    errormsg(result.msg);
                 }
             });
         });
