@@ -1,6 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+const mysql = require('./repository/ticketingdb');
+const helper = require('./repository/customhelper');
+const dictionary = require('./repository/dictionary');
+const crypt = require('./repository/cryptography');
+
 function isAuthAdmin(req, res, next) {
   if (req.session.isAuth && req.session.role == "ADMINISTRATOR" && req.session.position == "DEVELOPER") {
     next();

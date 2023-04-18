@@ -64,38 +64,50 @@ router.post('/save', (req, res) => {
     let createdby = 'CREATOR';
     let createdate = helper.GetCurrentDatetime();
     let data = [];
+    let sql_check = `select * from master_user where mu_fullname='${fullname}'`;
 
-    crypt.Encrypter(password, (err, result) => {
-      if (err) console.error('Encryption Error: ', err);
+    mysql.Select(sql_check, 'MasterUser', (err, result) => {
+      if (err) console.error('Error:', err);
 
-      console.log(result)
-
-      data.push([
-        fullname,
-        username,
-        result,
-        role,
-        position,
-        status,
-        createdby,
-        createdate
-      ])
-    })
-
-    console.log(data);
-    mysql.InsertTable('master_user', data, (err, result) => {
-      if (err) {
+      if (result.length != 0) {
         return res.json({
-          msg: err
-        })
+          msg: 'exist'
+        });
       }
+      else {
+        crypt.Encrypter(password, (err, result) => {
+          if (err) console.error('Encryption Error: ', err);
 
-      console.log(result);
+          console.log(result)
 
-      res.json({
-        msg: 'success'
-      })
-    });
+          data.push([
+            fullname,
+            username,
+            result,
+            role,
+            position,
+            status,
+            createdby,
+            createdate
+          ])
+        })
+
+        console.log(data);
+        mysql.InsertTable('master_user', data, (err, result) => {
+          if (err) {
+            return res.json({
+              msg: err
+            })
+          }
+
+          console.log(result);
+
+          res.json({
+            msg: 'success'
+          })
+        });
+      }
+    })
 
   } catch (error) {
     res.json({

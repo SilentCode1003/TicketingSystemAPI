@@ -1,0 +1,121 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+
+        $(document).on('click', '#addBtn', function () {
+            let fullname = $('#fullname').val();
+            let username = $('#username').val();
+            let password = $('#password').val();
+            let email = $('#email').val();
+            let contactno = $('#contactno').val();
+            var message = "";
+
+            if (fullname == '') { message += 'FULLNAME ' }
+            if (username == '') { message += 'USERNAME ' }
+            if (password == '') { message += 'PASSWORD ' }
+            if (email == '') { message += 'EMAIL ' }
+            if (contactno == '') { message += 'CONTACT NO ' }
+
+            if (message != '') {
+                warning('Required', `Please fillup ${message} field`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/client/save',
+                    data: {
+                        fullname: fullname,
+                        username: username,
+                        password: password,
+                        email: email,
+                        contactno: contactno,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`)
+                        }
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+
+        function LoadTable() {
+            $('#client-table').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 400,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/client/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
+                            }
+
+                            finalData.push({
+                                clientid: item.clientid,
+                                fullname: item.fullname,
+                                username: item.username,
+                                password: item.password,
+                                email: item.email,
+                                contactnumber: item.contactnumber,
+                                status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
+                                action: action,
+                            })
+
+                        })
+
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'clientid' },
+                    { data: 'fullname' },
+                    { data: 'username' },
+                    { data: 'password' },
+                    { data: 'email' },
+                    { data: 'contactnumber' },
+                    { data: 'status' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                    hideloader();
+                }
+            })
+        }
+    })
+</script>

@@ -251,4 +251,102 @@ exports.InsertTable = (tablename, data, callback) => {
             callback(null, result)
         })
     }
+
+    if (tablename == 'master_department') {
+        let sql = `INSERT INTO master_department(
+            md_departmentname,
+            md_status,
+            md_createdby,
+            md_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_client') {
+        let sql = `INSERT INTO master_client(
+            mc_fullname,
+            mc_username,
+            mc_password,
+            mc_email,
+            mc_contactnumber,
+            mc_status,
+            mc_createdby,
+            mc_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_concern_type') {
+        let sql = `INSERT INTO master_concern_type(
+            mct_concernname,
+            mct_status,
+            mct_createdby,
+            mct_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_personel') {
+        let sql = `INSERT INTO master_personel(
+            mp_fullname,
+            mp_department,
+            mp_role,
+            mp_position,,
+            mp_location,
+            mp_status,
+            mp_createdby,
+            mp_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_priority_type') {
+        let sql = `INSERT INTO master_priority_type(
+            mpt_priorityname,
+            mpt_status,
+            mpt_createdby,
+            mpt_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_urgency_type') {
+        let sql = `INSERT INTO master_urgency_type(
+            mut_urgencyname,
+            mut_status,
+            mut_createdby,
+            mut_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
 }

@@ -9,25 +9,44 @@
             let password = $('#password').val();
             let rolelist = $('#rolelist').val();
             let positionlist = $('#positionlist').val();
+            var message = "";
 
-            $.ajax({
-                type: 'POST',
-                url: '/users/save',
-                data: {
-                    fullname: fullname,
-                    username: username,
-                    password: password,
-                    rolelist: rolelist,
-                    positionlist: positionlist,
-                },
-                success: function (result) {
-                    LoadTable();
-                    success('Saved', 'Successfully')
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+            if (fullname == '') { message += 'FULLNAME ' }
+            if (username == '') { message += 'USERNAME ' }
+            if (password == '') { message += 'PASSWORD ' }
+            if (rolelist == '') { message += 'ROLE ' }
+            if (positionlist == '') { message += 'POSITION ' }
+
+            if (message != '') {
+                warning('Required', `Please fillup ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/save',
+                    data: {
+                        fullname: fullname,
+                        username: username,
+                        password: password,
+                        rolelist: rolelist,
+                        positionlist: positionlist,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
         })
 
         function LoadList() {
@@ -91,10 +110,10 @@
                             var status = item.status;
 
                             if (status == 'ACTIVE') {
-                                action = '<button class="assign-btn" id="approvedBtn" name="approvedBtn">APPROVE</button>'
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
                             }
                             if (status == 'INACTIVE') {
-                                action = '<button class="approve-btn" id="printBtn" name="printBtn">PRINT</button>'
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
                             }
 
                             finalData.push({
