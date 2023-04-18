@@ -61,22 +61,33 @@ router.post('/save', (req, res) => {
     let createdby = req.session.fullname;
     let createdate = helper.GetCurrentDatetime();
     let data = [];
+    let sql_check = `select * from master_concern_type where mct_concernname='${concernname}'`;
 
-    data.push([
-      concernname,
-      status,
-      createdby,
-      createdate
-    ])
+    mysql.Select(sql_check, 'MasterConcernType', (err, result) => {
+      if (err) console.error('Error: ', err);
 
-    mysql.InsertTable('master_concern_type', data, (err, result) => {
-      if (err) console.error(err);
+      if (result.length != 0) {
+        return res.json({
+          msg: 'exist'
+        })
+      }
+      else {
+        data.push([
+          concernname,
+          status,
+          createdby,
+          createdate
+        ])
 
-      res.json({
-        msg: 'success'
-      })
-    });
+        mysql.InsertTable('master_concern_type', data, (err, result) => {
+          if (err) console.error(err);
 
+          res.json({
+            msg: 'success'
+          })
+        });
+      }
+    })
   } catch (error) {
     res.json({
       msg: error
