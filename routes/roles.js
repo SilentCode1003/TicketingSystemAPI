@@ -7,7 +7,7 @@ const dictionary = require('./repository/dictionary');
 
 function isAuthAdmin(req, res, next) {
 
-  if (req.session.isAuth && req.session.accounttype == "CREATOR") {
+  if (req.session.isAuth && req.session.role == "ADMINISTRATOR" && req.session.position == "DEVELOPER") {
     next();
   }
   else {
@@ -16,13 +16,13 @@ function isAuthAdmin(req, res, next) {
 };
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/',isAuthAdmin, function (req, res, next) {
   res.render('roles', {
-    title: 'Ticketing System',
-    username: 'CREATOR',
-    // password: req.session.passowrd,
-    // fullname: req.session.fullname,
-    // accounttype: req.session.accounttype
+    title: req.session.title,
+    username: req.session.username,
+    fullname: req.session.fullname,
+    role: req.session.role,
+    position: req.session.position
   });
 });
 

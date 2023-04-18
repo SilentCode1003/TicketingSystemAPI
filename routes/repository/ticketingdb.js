@@ -8,7 +8,7 @@ crypt.Decrypter(process.env._PASSWORD, (err, result) => {
     if (err) throw err;
 
     password = result;
-    // console.log(`${result}`);
+    console.log(`${result}`);
 });
 
 

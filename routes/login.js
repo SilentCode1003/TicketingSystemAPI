@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+require('dotenv').config();
 
 
 const crypt = require('./repository/cryptography');
@@ -8,7 +9,7 @@ const mysql = require('./repository/ticketingdb');
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('login', {
-    title: 'Ticketing System',
+    title: req.session.title,
     username: req.session.username,
     fullname: req.session.fullname,
     role: req.session.role,
@@ -45,6 +46,7 @@ router.post('/authentication', (req, res) => {
           req.session.fullname = result[0].fullname;
           req.session.role = result[0].role;
           req.session.position = result[0].position;
+          req.session.title = process.env._TITLE;
 
           let data = [];
           data.push({
@@ -60,7 +62,7 @@ router.post('/authentication', (req, res) => {
           res.json({
             msg: 'success',
             data: data
-          })
+          });
         }
         else {
           return res.json
