@@ -179,3 +179,20 @@ exports.MasterLocation = (data) => {
 
     return dataResult;
 }
+
+exports.MasterStatus = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            statuscode: key.ms_statuscode,
+            statusname: key.ms_statusname,
+            status: key.ms_status,
+            createdby: key.ms_createdby,
+            createddate: key.ms_createddate,
+        })
+    });
+
+    return dataResult;
+}

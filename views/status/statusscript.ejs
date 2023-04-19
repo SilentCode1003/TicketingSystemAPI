@@ -3,21 +3,21 @@
         LoadTable();
 
         $(document).on('click', '#addBtn', function () {
-            let rolename = $('#rolename').val();
-
+            let statusname = $('#statusname').val();
+           
             var message = "";
 
-            if (rolename == '') { message += 'ROLE NAME ' }
-
+            if (statusname == '') { message += 'STATUS NAME ' }
+        
             if (message != '') {
                 warning('Required', `Please fillup ${message} field`);
             }
             else {
                 $.ajax({
                     type: 'POST',
-                    url: '/role/save',
+                    url: '/status/save',
                     data: {
-                        rolename: rolename,
+                        statusname: statusname,
                     },
                     success: function (result) {
                         if (result.msg == 'success') {
@@ -26,7 +26,7 @@
                         }
 
                         if (result.msg == 'exist') {
-                            warning('Exist', `${rolename} has already registered!`)
+                            warning('Exist', `${statusname} has already registered!`)
                         }
                     },
                     error: function (err) {
@@ -38,7 +38,7 @@
 
 
         function LoadTable() {
-            $('#role-table').DataTable({
+            $('#status-table').DataTable({
                 'destroy': true,
                 'processing': true,
                 'serverSide': true,
@@ -49,7 +49,7 @@
                 'scrollCollapse': true,
                 'serverMethod': 'GET',
                 'ajax': {
-                    'url': '/roles/load',
+                    'url': '/status/load',
                     'dataSrc': (json) => {
                         var finalData = [];
                         var data = json.data;
@@ -60,20 +60,15 @@
                             var status = item.status;
 
                             if (status == 'ACTIVE') {
-                                action = `
-                                <div class="table-button">
-                                    <button id="editBtn" name="editBtn">EDIT</button>
-                                    <button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>
-                                </div>
-                                `;
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
                             }
                             if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button> <button id="activeBtn" name="activeBtn">ACTIVE</button>';
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
                             }
 
                             finalData.push({
-                                rolecode: item.rolecode,
-                                rolename: item.rolename,
+                                statuscode: item.statuscode,
+                                statusname: item.statusname,
                                 status: item.status,
                                 createdby: item.createdby,
                                 createddate: item.createddate,
@@ -90,8 +85,8 @@
                     className: 'td-indent',
                 }],
                 'columns': [
-                    { data: 'rolecode' },
-                    { data: 'rolename' },
+                    { data: 'statuscode' },
+                    { data: 'statusname' },
                     { data: 'status' },
                     { data: 'createdby' },
                     { data: 'createddate' },
@@ -101,7 +96,7 @@
                     console.log('init complete');
                     hideloader();
                 }
-            });
+            })
         }
     })
 </script>

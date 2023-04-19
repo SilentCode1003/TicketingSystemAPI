@@ -98,6 +98,10 @@ exports.Select = (sql, table, callback) => {
             if (table == 'MasterLocation') {
                 callback(null, model.MasterLocation(results));
             }
+
+            if (table == 'MasterStatus') {
+                callback(null, model.MasterStatus(results));
+            }
         });
 
     } catch (error) {
@@ -360,6 +364,21 @@ exports.InsertTable = (tablename, data, callback) => {
             ml_status,
             ml_createdby,
             ml_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_status') {
+        let sql = `INSERT INTO master_status(
+            ms_statusname,
+            ms_status,
+            ms_createdby,
+            ms_createddate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

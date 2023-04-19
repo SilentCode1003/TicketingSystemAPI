@@ -22,6 +22,7 @@ var priorityRouter = require('./routes/priority');
 var rolesRouter = require('./routes/roles');
 var urgencyRouter = require('./routes/urgency');
 var locationRouter = require('./routes/location');
+var statusRouter = require('./routes/status');
 
 
 var app = express();
@@ -73,6 +74,7 @@ app.use('/priority', priorityRouter);
 app.use('/roles', rolesRouter);
 app.use('/urgency', urgencyRouter);
 app.use('/location', locationRouter);
+app.use('/status', statusRouter);
 
 app.use(cors({
   origin: '*', // allow only requests from this domain

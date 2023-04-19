@@ -55,30 +55,41 @@ router.get('/load', (req, res) => {
 
 router.post('/save', (req, res) => {
   try {
-    let rolename = req.body.rolename;
-    let status = dictionary.GetValue(dictionary.ACT());
-    let createdby = req.session.fullname;
-    let createdate = helper.GetCurrentDatetime();
-    let data = [];
+      let rolename = req.body.rolename;
+      let status = dictionary.GetValue(dictionary.ACT());
+      let createdby = req.session.fullname;
+      let createdate = helper.GetCurrentDatetime();
+      let data = [];
+      let sql_check = `select * from master_role where mr_rolename='${rolename}'`;
 
-    data.push([
-      rolename,
-      status,
-      createdby,
-      createdate
-    ])
+      mysql.Select(sql_check, 'MasterRole', (err, result) => {
+          if (err) console.error('Error: ', err);
 
-    mysql.InsertTable('master_role', data, (err, result) => {
-      if (err) console.error(err);
+          if (result.length != 0) {
+              return res.json({
+                  msg: 'exist'
+              })
+          }
+          else {
+              data.push([
+                rolename,
+                  status,
+                  createdby,
+                  createdate
+              ])
 
-      res.json({
-        msg: 'success'
+              mysql.InsertTable('master_role', data, (err, result) => {
+                  if (err) console.error(err);
+
+                  res.json({
+                      msg: 'success'
+                  })
+              });
+          }
       })
-    });
-
   } catch (error) {
-    res.json({
-      msg: error
-    })
+      res.json({
+          msg: error
+      })
   }
 })
