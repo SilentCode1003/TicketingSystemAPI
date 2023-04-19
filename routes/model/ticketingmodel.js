@@ -162,3 +162,20 @@ exports.MasterUrgencyType = (data) => {
 
     return dataResult;
 }
+
+exports.MasterLocation = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            locationcode: key.ml_locationcode,
+            locationname: key.ml_locationname,
+            status: key.ml_status,
+            createdby: key.ml_createdby,
+            createddate: key.ml_createddate,
+        })
+    });
+
+    return dataResult;
+}

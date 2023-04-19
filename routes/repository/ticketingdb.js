@@ -94,6 +94,10 @@ exports.Select = (sql, table, callback) => {
             if (table == 'MasterUrgencyType') {
                 callback(null, model.MasterUrgencyType(results));
             }
+
+            if (table == 'MasterLocation') {
+                callback(null, model.MasterLocation(results));
+            }
         });
 
     } catch (error) {
@@ -306,7 +310,7 @@ exports.InsertTable = (tablename, data, callback) => {
             mp_fullname,
             mp_department,
             mp_role,
-            mp_position,,
+            mp_position,
             mp_location,
             mp_status,
             mp_createdby,
@@ -341,6 +345,21 @@ exports.InsertTable = (tablename, data, callback) => {
             mut_status,
             mut_createdby,
             mut_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_location') {
+        let sql = `INSERT INTO master_location(
+            ml_locationname,
+            ml_status,
+            ml_createdby,
+            ml_createddate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

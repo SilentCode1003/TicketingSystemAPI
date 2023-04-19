@@ -7,7 +7,7 @@
             let fullname = $('#fullname').val();
             let departmentlist = $('#departmentlist').val();
             let rolelist = $('#rolelist').val();
-            let positionlist = $('#rolelispositionlistt').val();
+            let positionlist = $('#positionlist').val();
             let locationlist = $('#locationlist').val();
             var message = "";
 
@@ -96,6 +96,24 @@
                         var options = new Option(item.departmentname, item.departmentname);
                         $(options).html(item.departmentname);
                         $('#departmentlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/location/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.locationname, item.locationname);
+                        $(options).html(item.locationname);
+                        $('#locationlist').append(options);
                     });
 
                 },
