@@ -102,6 +102,10 @@ exports.Select = (sql, table, callback) => {
             if (table == 'MasterStatus') {
                 callback(null, model.MasterStatus(results));
             }
+
+            if (table == 'MasterIssue') {
+                callback(null, model.MasterIssue(results));
+            }
         });
 
     } catch (error) {
@@ -379,6 +383,22 @@ exports.InsertTable = (tablename, data, callback) => {
             ms_status,
             ms_createdby,
             ms_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_issue') {
+        let sql = `INSERT INTO master_issue(
+            mi_issuename,
+            mi_concernname,
+            mi_status,
+            mi_createdby,
+            mi_createddate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

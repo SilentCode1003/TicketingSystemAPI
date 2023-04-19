@@ -196,3 +196,21 @@ exports.MasterStatus = (data) => {
 
     return dataResult;
 }
+
+exports.MasterIssue = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            issuecode: key.mi_issuecode,
+            issuename: key.mi_issuename,
+            concernname: key.mi_concernname,
+            status: key.mi_status,
+            createdby: key.mi_createdby,
+            createddate: key.mi_createddate,
+        })
+    });
+
+    return dataResult;
+}
