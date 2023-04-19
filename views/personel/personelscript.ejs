@@ -1,0 +1,178 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+        LoadList();
+
+        $(document).on('click', '#addBtn', function () {
+            let fullname = $('#fullname').val();
+            let departmentlist = $('#departmentlist').val();
+            let rolelist = $('#rolelist').val();
+            let positionlist = $('#rolelispositionlistt').val();
+            let locationlist = $('#locationlist').val();
+            var message = "";
+
+            if (fullname == '') { message += 'FULLNAME ' }
+            if (departmentlist == '') { message += 'DEPARTMENT ' }
+            if (rolelist == '') { message += 'ROLE ' }
+            if (positionlist == '') { message += 'POSITION ' }
+            if (locationlist == '') { message += 'LOCATION ' }
+
+            if (message != '') {
+                warning('Required', `Please fillup ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/personel/save',
+                    data: {
+                        fullname: fullname,
+                        departmentlist: departmentlist,
+                        rolelist: rolelist,
+                        positionlist: positionlist,
+                        locationlist: locationlist,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/roles/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.rolename, item.rolename);
+                        $(options).html(item.rolename);
+                        $('#rolelist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/position/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.positionname, item.positionname);
+                        $(options).html(item.positionname);
+                        $('#positionlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/department/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.departmentname, item.departmentname);
+                        $(options).html(item.departmentname);
+                        $('#departmentlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        }
+
+        function LoadTable() {
+            $('#personel-table').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 400,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/personel/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
+                            }
+
+                            finalData.push({
+                                personelid: item.personelid,
+                                fullname: item.fullname,
+                                department: item.department,
+                                role: item.role,
+                                position: item.position,
+                                location: item.location,
+                                status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
+                                action: action,
+                            })
+
+                        })
+
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'personelid' },
+                    { data: 'fullname' },
+                    { data: 'department' },
+                    { data: 'role' },
+                    { data: 'position' },
+                    { data: 'location' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'status' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                    hideloader();
+                }
+            });
+        }
+    })
+</script>

@@ -61,7 +61,7 @@ router.post('/save', (req, res) => {
     let role = req.body.rolelist;
     let position = req.body.positionlist;
     let status = dictionary.GetValue(dictionary.ACT());
-    let createdby = 'CREATOR';
+    let createdby = req.session.fullname;
     let createdate = helper.GetCurrentDatetime();
     let data = [];
     let sql_check = `select * from master_user where mu_fullname='${fullname}'`;
