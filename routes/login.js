@@ -97,3 +97,39 @@ router.post('/logout', (req, res) => {
   });
 
 });
+
+router.post('/adminlogin', (req, res) => {
+  try {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    crypt.Encrypter(password, (err, result) => {
+      if (err) {
+        console.error('Encryption Error: ', err);
+      }
+
+
+      let sql = `select * from master_user where mu_username='${username}' and mu_password='${result}'`;
+      mysql.Select(sql, 'MasterUser', (err, result) => {
+        if (err) {
+          return res.json
+            ({
+              msg: 'error',
+              data: err
+            })
+        }
+
+        res.json({
+          msg: 'success',
+          data: result
+        })
+      });
+    });
+
+  } catch (error) {
+    res.json({
+      msg: 'error',
+      data: error
+    })
+  }
+})
