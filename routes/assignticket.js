@@ -78,40 +78,52 @@ router.post('/save', (req, res) => {
 
         GetConcernCode(concerntype)
             .then(result => {
-                let concerncode = result;
-                let ticketid = `${helper.GetCurrentYear()}${helper.GetCurrentMonth()}${helper.GetCurrentDay()}${concerncode}${'1'}`;
-                let subject = `${concerntype}[${requestername}]${ticketid}`
+                let code = result;
 
-                data.push([
-                    ticketid,
-                    subject,
-                    concerntype,
-                    issuetype,
-                    requestername,
-                    requesteremail,
-                    description,
-                    prioritytype,
-                    ticketstatus,
-                    createdate,
-                    duedate,
-                    statusdetail,
-                    assignedto,
-                    department,
-                    attachement,
-                    comment
-                ])
+                GetCurrentCount(concerntype)
+                    .then(result => {
+                        let count = result;
+                        let concerncode = code;
+                        let currentcount = count + 1;
+                        let ticketid = `${helper.GetCurrentYear()}${helper.GetCurrentMonth()}${helper.GetCurrentDay()}${concerncode}${currentcount}`;
+                        let subject = `${concerntype}[${requestername}]${ticketid}`
 
-                console.log(data);
+                        data.push([
+                            ticketid,
+                            subject,
+                            concerntype,
+                            issuetype,
+                            requestername,
+                            requesteremail,
+                            description,
+                            prioritytype,
+                            ticketstatus,
+                            createdate,
+                            duedate,
+                            statusdetail,
+                            assignedto,
+                            department,
+                            attachement,
+                            comment
+                        ])
 
-                mysql.InsertTable('request_ticket_detail', data, (err, result) => {
-                    if (err) console.error('Error: ', err);
+                        console.log(data);
 
-                    console.log(result);
+                        mysql.InsertTable('request_ticket_detail', data, (err, result) => {
+                            if (err) console.error('Error: ', err);
 
-                    res.json({
-                        msg: 'success',
+                            console.log(result);
+
+                            res.json({
+                                msg: 'success',
+                            })
+                        })
                     })
-                })
+                    .catch(error => {
+
+                    })
+
+
             })
             .catch(error => {
                 return res.json({
@@ -146,6 +158,25 @@ function GetConcernCode(concernname) {
 
     } catch (error) {
         return error;
+    }
+}
+
+function GetCurrentCount(concernname) {
+    try {
+        return new Promise((resolve, reject) => {
+            let sql = `select count(*) as currentcount from request_ticket_detail where td_concern='${concernname}'`;
+
+            mysql.SelectResult(sql, (err, result) => {
+                if (err) reject(err);
+
+                let currentcount = result[0].currentcount == '0' ? 0 : parseInt(result[0].currentcount)
+                console.log(currentcount);
+                resolve(currentcount);
+            })
+        })
+
+    } catch (error) {
+        return error
     }
 }
 
