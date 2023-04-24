@@ -24,6 +24,7 @@ var urgencyRouter = require('./routes/urgency');
 var locationRouter = require('./routes/location');
 var statusRouter = require('./routes/status');
 var issueRouter = require('./routes/issue');
+var assignticketRouter = require('./routes/assignticket');
 
 
 var app = express();
@@ -77,6 +78,7 @@ app.use('/urgency', urgencyRouter);
 app.use('/location', locationRouter);
 app.use('/status', statusRouter);
 app.use('/issue', issueRouter);
+app.use('/assignticket', assignticketRouter);
 
 app.use(cors({
   origin: '*', // allow only requests from this domain

@@ -94,3 +94,21 @@ router.post('/save', (req, res) => {
     })
   }
 })
+
+//#region FUNCTIONS
+exports.GetConcernCode = (concernname) => {
+  try {
+    let sql = `select * form master_concern_type where mct_concernname='${concernname}'`;
+
+    mysql.Select(sql, 'MasterConcernType', (err, result) => {
+      if (err) return err;
+
+      console.log(result);
+
+      return result[0].concerncode;
+    })
+  } catch (error) {
+    return error;
+  }
+}
+//#endregion

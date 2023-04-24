@@ -19,6 +19,12 @@ const connection = mysql.createConnection({
     database: process.env._DATABASE
 });
 
+crypt.Encrypter('#Ebedaf9dd0d!', (err, result) => {
+    if (err) console.error('Error: ', err);
+
+    console.log(result);
+})
+
 exports.CheckConnection = () => {
     connection.connect((err) => {
         if (err) {
@@ -105,6 +111,10 @@ exports.Select = (sql, table, callback) => {
 
             if (table == 'MasterIssue') {
                 callback(null, model.MasterIssue(results));
+            }
+
+            if (table == 'RequestTicketDetail') {
+                callback(null, model.RequestTicketDetail(results));
             }
         });
 
@@ -399,6 +409,33 @@ exports.InsertTable = (tablename, data, callback) => {
             mi_status,
             mi_createdby,
             mi_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'request_ticket_detail') {
+        let sql = `INSERT INTO request_ticket_detail(
+            td_ticketid,
+            td_subject,
+            td_concern,
+            td_issue,
+            td_requestername,
+            td_requesteremail,
+            td_description,
+            td_priority,
+            td_ticketstatus,
+            td_datecreated,
+            td_duedate,
+            td_statusdetail,
+            td_assignedto,
+            td_department,
+            td_attachement,
+            td_comment) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

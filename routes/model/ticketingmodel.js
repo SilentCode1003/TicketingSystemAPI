@@ -214,3 +214,31 @@ exports.MasterIssue = (data) => {
 
     return dataResult;
 }
+
+exports.RequestTicketDetail = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            ticketid: key.td_ticketid,
+            subject: key.td_subject,
+            concern: key.td_concern,
+            issue: key.td_issue,
+            requestername: key.td_requestername,
+            requesteremail: key.key.td_requesteremail,
+            description: key.td_description,
+            priority: key.td_priority,
+            ticketstatus: key.td_ticketstatus,
+            datecreated: key.td_datecreated,
+            duedate: key.td_duedate,
+            statusdetail: key.td_statusdetail,
+            assignedto: key.td_assignedto,
+            department: key.td_department,
+            attachement: key.td_attachement,
+            comment: key.td_comment,
+        })
+    });
+
+    return dataResult;
+}
