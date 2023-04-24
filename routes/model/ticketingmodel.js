@@ -226,7 +226,7 @@ exports.RequestTicketDetail = (data) => {
             concern: key.td_concern,
             issue: key.td_issue,
             requestername: key.td_requestername,
-            requesteremail: key.key.td_requesteremail,
+            requesteremail: key.td_requesteremail,
             description: key.td_description,
             priority: key.td_priority,
             ticketstatus: key.td_ticketstatus,
