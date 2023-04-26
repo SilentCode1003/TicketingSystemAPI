@@ -64,7 +64,7 @@ router.post('/save', (req, res) => {
         let prioritytype = req.body.prioritytype;
         let ticketstatus = req.body.ticketstatus;
         let assignedto = req.body.assignedto;
-        let attachement = req.body.attachement == undefined ? 'NO ATTACHEMENT' : req.body.ticketstatus;
+        let attachment = req.body.attachment == undefined ? 'NO ATTACHMENT' : req.body.attachment;
         let department = req.body.department;
         let comment = req.body.comment;
         let duedate = 'number of days base on priority';
@@ -74,7 +74,7 @@ router.post('/save', (req, res) => {
         let createdate = helper.GetCurrentDatetime();
         let data = [];
 
-        console.log(attachement);
+        console.log(attachment);
 
         GetConcernCode(concerntype)
             .then(result => {
@@ -103,7 +103,7 @@ router.post('/save', (req, res) => {
                             statusdetail,
                             assignedto,
                             department,
-                            attachement,
+                            attachment,
                             comment
                         ])
 
@@ -138,10 +138,7 @@ router.post('/save', (req, res) => {
     }
 })
 
-
-
-
-//#region GET CONCERNNAME
+//#region FUNCTION
 function GetConcernCode(concernname) {
     try {
         return new Promise((resolve, rejects) => {
@@ -161,7 +158,8 @@ function GetConcernCode(concernname) {
     }
 }
 
-function GetCurrentCount(concernname) {
+function GetCurrentCount(concernname) 
+{
     try {
         return new Promise((resolve, reject) => {
             let sql = `select count(*) as currentcount from request_ticket_detail where td_concern='${concernname}'`;
@@ -179,5 +177,4 @@ function GetCurrentCount(concernname) {
         return error
     }
 }
-
   //#endregion
