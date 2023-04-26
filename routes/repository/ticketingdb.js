@@ -113,6 +113,10 @@ exports.Select = (sql, table, callback) => {
                 callback(null, model.MasterIssue(results));
             }
 
+             if (table == 'MasterPriorityDue') {
+                callback(null, model.MasterPriorityDue(results));
+            }
+
             if (table == 'RequestTicketDetail') {
                 callback(null, model.RequestTicketDetail(results));
             }
@@ -409,6 +413,23 @@ exports.InsertTable = (tablename, data, callback) => {
             mi_status,
             mi_createdby,
             mi_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_priority_due') {
+        let sql = `INSERT INTO master_priority_due(
+            mpd_priorityname,
+            mpd_day,
+            mpd_hour,
+            mpd_status,
+            mpd_createdby,
+            mpd_createddate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

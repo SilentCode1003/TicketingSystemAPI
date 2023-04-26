@@ -166,6 +166,22 @@ exports.GetCurrentMonthLastDay = () => {
 exports.ConvertToDate = (datetime) => {
     return moment(`${datetime}`).format('YYYY-MM-DD');
 }
+
+exports.AddDayTime = (day, hour) => {
+    let now = moment();
+    let future = now.add({ days: day, hours: hour });
+
+    return future.format(('YYYY-MM-DD hh:mm'));
+
+}
+
+exports.SubtractDayTime = (idate, fdate) => {
+    const initaldate = moment(`${idate}`);
+    const finaldate = moment(`${fdate}`);
+    const diffInDays = finaldate.diff(initaldate, 'days');
+
+    return diffInDays;
+}
 //#endregion
 
 //#region  SUMMARY REPORTS

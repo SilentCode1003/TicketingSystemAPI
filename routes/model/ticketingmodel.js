@@ -215,6 +215,25 @@ exports.MasterIssue = (data) => {
     return dataResult;
 }
 
+exports.MasterPriorityDue = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            priorityduecode: key.mpd_priorityduecode,
+            priorityname: key.mpd_priorityname,
+            day: key.mpd_day,
+            hour: key.mpd_hour,
+            status: key.mpd_status,
+            createdby: key.mpd_createdby,
+            createddate: key.mpd_createddate,
+        })
+    });
+
+    return dataResult;
+}
+
 exports.RequestTicketDetail = (data) => {
     let dataResult = [];
 

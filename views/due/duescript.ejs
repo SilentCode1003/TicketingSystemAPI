@@ -1,0 +1,112 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+
+        $.ajax({
+            type: 'GET',
+            url: '/priority/load',
+            success: function (result) {
+                var data = result.data;
+
+                $.each(data, function (key, item) {
+                    var options = new Option(item.priorityname, item.priorityname);
+                    $(options).html(item.priorityname);
+                    $('#prioritylist').append(options);
+                });
+
+            },
+            error: function (err) {
+                errormsg(err);
+            }
+        })
+
+        $(document).on('click', '#addBtn', function () {
+            let prioritylist = $('#prioritylist').val();
+            let day = $('#day').val();
+            let hour = $('#hour').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/due/save',
+                data: {
+                    prioritylist: prioritylist,
+                    day: day,
+                    hour: hour,
+                },
+                success: function (result) {
+                    LoadTable();
+                    success('Saved', 'Successfully')
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        })
+
+        function LoadTable() {
+            $('#prioritydue-table').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 400,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/due/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
+                            }
+
+                            finalData.push({
+                                priorityduecode: item.priorityduecode,
+                                priorityname: item.priorityname,
+                                day: item.day,
+                                hour: item.hour,
+                                status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
+                                action: action,
+                            })
+
+                        })
+
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'priorityduecode' },
+                    { data: 'priorityname' },
+                    { data: 'day' },
+                    { data: 'hour' },
+                    { data: 'status' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                    hideloader();
+                }
+            });
+        }
+    })
+</script>

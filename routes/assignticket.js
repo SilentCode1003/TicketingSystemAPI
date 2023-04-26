@@ -5,6 +5,7 @@ const mysql = require('./repository/ticketingdb');
 const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
 const crypt = require('./repository/cryptography');
+const moment = require('moment');
 
 function isAuthAdmin(req, res, next) {
 
@@ -67,8 +68,8 @@ router.post('/save', (req, res) => {
         let attachment = req.body.attachment == undefined ? 'NO ATTACHMENT' : req.body.attachment;
         let department = req.body.department;
         let comment = req.body.comment;
-        let duedate = 'number of days base on priority';
-        let statusdetail = 'Due in 3 days';
+        // let duedate = 'number of days base on priority';
+        // let statusdetail = 'Due in 3 days';
         let status = dictionary.GetValue(dictionary.ACT());
         let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
@@ -88,42 +89,49 @@ router.post('/save', (req, res) => {
                         let ticketid = `${helper.GetCurrentYear()}${helper.GetCurrentMonth()}${helper.GetCurrentDay()}${concerncode}${currentcount}`;
                         let subject = `${concerntype}[${requestername}]${ticketid}`
 
-                        data.push([
-                            ticketid,
-                            subject,
-                            concerntype,
-                            issuetype,
-                            requestername,
-                            requesteremail,
-                            description,
-                            prioritytype,
-                            ticketstatus,
-                            createdate,
-                            duedate,
-                            statusdetail,
-                            assignedto,
-                            department,
-                            attachment,
-                            comment
-                        ])
+                        GetDueDate(prioritytype)
+                            .then(result => {
+                                let duedate = result;
+                                let statusdetail = `Due in ${helper.SubtractDayTime(moment(createdate).format('YYYY-MM-DD'), moment(duedate).format('YYYY-MM-DD'))} days`;
 
-                        console.log(data);
+                                console.log(statusdetail)
 
-                        mysql.InsertTable('request_ticket_detail', data, (err, result) => {
-                            if (err) console.error('Error: ', err);
+                                data.push([
+                                    ticketid,
+                                    subject,
+                                    concerntype,
+                                    issuetype,
+                                    requestername,
+                                    requesteremail,
+                                    description,
+                                    prioritytype,
+                                    ticketstatus,
+                                    createdate,
+                                    duedate,
+                                    statusdetail,
+                                    assignedto,
+                                    department,
+                                    attachment,
+                                    comment
+                                ])
 
-                            console.log(result);
+                                console.log(data);
 
-                            res.json({
-                                msg: 'success',
+                                mysql.InsertTable('request_ticket_detail', data, (err, result) => {
+                                    if (err) console.error('Error: ', err);
+
+                                    console.log(result);
+
+                                    res.json({
+                                        msg: 'success',
+                                    })
+                                })
                             })
-                        })
+                            .catch()
                     })
                     .catch(error => {
 
                     })
-
-
             })
             .catch(error => {
                 return res.json({
@@ -132,6 +140,52 @@ router.post('/save', (req, res) => {
             })
     }
     catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
+router.get('/view', (req, res) => {
+    try {
+        let sql = `select * from request_ticket_detail`;
+
+        mysql.Select(sql, 'RequestTicketDetail', (err, result) => {
+            if (err) {
+                return res.json({
+                    msg: err
+                })
+            }
+
+            console.log(helper.GetCurrentDatetime());
+            var data = [];
+            result.forEach((key, item) => {
+                data.push({
+                    ticketid: key.ticketid,
+                    subject: key.subject,
+                    concern: key.concern,
+                    issue: key.issue,
+                    requestername: key.requestername,
+                    requesteremail: key.requesteremail,
+                    description: key.description,
+                    priority: key.priority,
+                    ticketstatus: key.ticketstatus,
+                    datecreated: key.datecreated,
+                    duedate: key.duedate,
+                    statusdetail: key.statusdetail,
+                    assignedto: key.assignedto,
+                    department: key.department,
+                    comment: key.comment,
+                })
+            });
+
+            res.json({
+                msg: 'success',
+                data: data
+            })
+        });
+
+    } catch (error) {
         res.json({
             msg: error
         })
@@ -158,8 +212,7 @@ function GetConcernCode(concernname) {
     }
 }
 
-function GetCurrentCount(concernname) 
-{
+function GetCurrentCount(concernname) {
     try {
         return new Promise((resolve, reject) => {
             let sql = `select count(*) as currentcount from request_ticket_detail where td_concern='${concernname}'`;
@@ -176,5 +229,21 @@ function GetCurrentCount(concernname)
     } catch (error) {
         return error
     }
+}
+
+function GetDueDate(priority) {
+    return new Promise((resolve, reject) => {
+        let sql = `select mpd_day as day, mpd_hour as hour from master_priority_due where mpd_priorityname='${priority}'`;
+
+        mysql.SelectResult(sql, (err, result) => {
+            if (err) reject(err);
+
+            console.log(`${result[0].day} ${result[0].hour}`);
+
+            var futuredate = helper.AddDayTime(result[0].day, result[0].hour)
+
+            resolve(futuredate);
+        })
+    })
 }
   //#endregion
