@@ -261,3 +261,36 @@ exports.RequestTicketDetail = (data) => {
 
     return dataResult;
 }
+
+exports.MasterFilter = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            filtercode: key.mf_filtercode,
+            filtername: key.mf_filtername,
+            isticketid: key.mf_isticketid,
+            issubject: key.mf_issubject,
+            isconcern: key.mf_isconcern,
+            isissue: key.mf_isissue,
+            isrequestername: key.mf_isrequestername,
+            isrequesteremail: key.mf_isrequesteremail,
+            isdescription: key.mf_isdescription,
+            ispriority: key.mf_ispriority,
+            isticketstatus: key.mf_isticketstatus,
+            isdatecreated: key.mf_isdatecreated,
+            isduedate: key.mf_isduedate,
+            isstatusdetail: key.mf_isstatusdetail,
+            isassignto: key.mf_isassignto,
+            isdepartment: key.mf_isdepartment,
+            isattachement: key.mf_isattachement,
+            iscomment: key.mf_iscomment,
+            status: key.mf_status,
+            createdby: key.mf_createdby,
+            createddate: key.mf_createddate,
+        })
+    });
+
+    return dataResult;
+}

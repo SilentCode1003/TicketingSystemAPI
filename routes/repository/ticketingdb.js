@@ -113,12 +113,16 @@ exports.Select = (sql, table, callback) => {
                 callback(null, model.MasterIssue(results));
             }
 
-             if (table == 'MasterPriorityDue') {
+            if (table == 'MasterPriorityDue') {
                 callback(null, model.MasterPriorityDue(results));
             }
 
             if (table == 'RequestTicketDetail') {
                 callback(null, model.RequestTicketDetail(results));
+            }
+
+            if (table == 'MasterFilter') {
+                callback(null, model.MasterFilter(results));
             }
         });
 
@@ -457,6 +461,37 @@ exports.InsertTable = (tablename, data, callback) => {
             td_department,
             td_attachement,
             td_comment) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'master_filter') {
+        let sql = `INSERT INTO master_filter(
+            mf_filtername,
+            mf_isticketid,
+            mf_issubject,
+            mf_isconcern,
+            mf_isissue,
+            mf_isrequestername,
+            mf_isrequesteremail,
+            mf_isdescription,
+            mf_ispriority,
+            mf_isticketstatus,
+            mf_isdatecreated,
+            mf_isduedate,
+            mf_isstatusdetail,
+            mf_isassignto,
+            mf_isdepartment,
+            mf_isattachement,
+            mf_iscomment,
+            mf_status,
+            mf_createdby,
+            mf_createddate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

@@ -27,6 +27,7 @@ var statusRouter = require('./routes/status');
 var issueRouter = require('./routes/issue');
 var assignticketRouter = require('./routes/assignticket');
 var dueRouter = require('./routes/due');
+var filterRouter = require('./routes/filter');
 
 
 var app = express();
@@ -83,6 +84,7 @@ app.use('/status', statusRouter);
 app.use('/issue', issueRouter);
 app.use('/assignticket', assignticketRouter);
 app.use('/due', dueRouter);
+app.use('/filter', filterRouter);
 
 app.use(cors({
   origin: '*', // allow only requests from this domain

@@ -1,0 +1,136 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+
+        // $(document).on('click', '#addBtn', function () {
+        //     let departmentname = $('#departmentname').val();
+
+        //     var message = "";
+
+        //     console.log('clicked!');
+
+        //     if (departmentname == '') { message += 'DEPARTMENT NAME ' }
+
+        //     if (message != '') {
+        //         warning('Required', `Please fillup ${message} field`);
+        //     }
+        //     else {
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: '/department/save',
+        //             data: {
+        //                 departmentname: departmentname,
+        //             },
+        //             success: function (result) {
+        //                 if (result.msg == 'success') {
+        //                     LoadTable();
+        //                     success('Saved', 'Successfully')
+        //                 }
+
+        //                 if (result.msg == 'exist') {
+        //                     warning('Exist', `${departmentname} has already registered!`)
+        //                 }
+        //             },
+        //             error: function (err) {
+        //                 errormsg(err);
+        //             }
+        //         })
+        //     }
+        // })
+
+
+        function LoadTable() {
+            $('#filter-table').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 550,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/filter/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
+                            }
+
+                            finalData.push({
+                                filtercode: item.mf_filtercode,
+                                filtername: item.mf_filtername,
+                                isticketid: item.mf_isticketid,
+                                issubject: item.mf_issubject,
+                                isconcern: item.mf_isconcern,
+                                isissue: item.mf_isissue,
+                                isrequestername: item.mf_isrequestername,
+                                isrequesteremail: item.mf_isrequesteremail,
+                                isdescription: item.mf_isdescription,
+                                ispriority: item.mf_ispriority,
+                                isticketstatus: item.mf_isticketstatus,
+                                isdatecreated: item.mf_isdatecreated,
+                                isduedate: item.mf_isduedate,
+                                isstatusdetail: item.mf_isstatusdetail,
+                                isassignto: item.mf_isassignto,
+                                isdepartment: item.mf_isdepartment,
+                                isattachement: item.mf_isattachement,
+                                iscomment: item.mf_iscomment,
+                                status: item.mf_status,
+                                createdby: item.mf_createdby,
+                                createddate: item.mf_createddate,
+                                action: action,
+                            })
+
+                        })
+
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'filtercode' },
+                    { data: 'filtername' },
+                    { data: 'isticketid' },
+                    { data: 'issubject' },
+                    { data: 'isconcern' },
+                    { data: 'isissue' },
+                    { data: 'isrequestername' },
+                    { data: 'isrequesteremail' },
+                    { data: 'isdescription' },
+                    { data: 'ispriority' },
+                    { data: 'isticketstatus' },
+                    { data: 'isdatecreated' },
+                    { data: 'isduedate' },
+                    { data: 'isstatusdetail' },
+                    { data: 'isassignto' },
+                    { data: 'isdepartment' },
+                    { data: 'isattachement' },
+                    { data: 'iscomment' },
+                    { data: 'status' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                    hideloader();
+                }
+            })
+        }
+    })
+</script>
