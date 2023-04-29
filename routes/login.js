@@ -98,7 +98,7 @@ router.post('/logout', (req, res) => {
 
 });
 
-router.post('/adminlogin', (req, res) => {
+router.post('/userlogin', (req, res) => {
   try {
     let username = req.body.username;
     let password = req.body.password;
@@ -118,11 +118,19 @@ router.post('/adminlogin', (req, res) => {
               data: err
             })
         }
+        console.log(result);
 
-        res.json({
-          msg: 'success',
-          data: result
-        })
+        if (result.length != 0) {
+          res.json({
+            msg: 'success',
+            data: result
+          })
+        }
+        else {
+          res.json({
+            msg: 'notmatch',
+          })
+        }
       });
     });
 

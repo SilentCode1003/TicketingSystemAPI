@@ -25,6 +25,12 @@ crypt.Encrypter('#Ebedaf9dd0d!', (err, result) => {
     console.log(result);
 })
 
+crypt.Decrypter('f6a3287039d0d75cb83cb29d35b3dfcb', (err, result) => {
+    if (err) console.error('Error: ', err);
+
+    console.log(`${result}`);
+});
+
 exports.CheckConnection = () => {
     connection.connect((err) => {
         if (err) {
@@ -123,6 +129,10 @@ exports.Select = (sql, table, callback) => {
 
             if (table == 'MasterFilter') {
                 callback(null, model.MasterFilter(results));
+            }
+
+            if (table == 'TicketComment') {
+                callback(null, model.TicketComment(results));
             }
         });
 
@@ -492,6 +502,23 @@ exports.InsertTable = (tablename, data, callback) => {
             mf_status,
             mf_createdby,
             mf_createddate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'ticket_comment') {
+        let sql = `INSERT INTO ticket_comment(
+            tc_ticketid,
+            tc_comment,
+            tc_attachement,
+            tc_status,
+            tc_commentby,
+            tc_commentdate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {

@@ -294,3 +294,22 @@ exports.MasterFilter = (data) => {
 
     return dataResult;
 }
+
+exports.TicketComment = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            commentid: key.tc_commentid,
+            ticketid: key.tc_ticketid,
+            comment: key.tc_comment,
+            attachement: key.tc_attachement,
+            status: key.tc_status,
+            commentby: key.tc_commentby,
+            commentdate: key.tc_commentdate,
+        })
+    });
+
+    return dataResult;
+}

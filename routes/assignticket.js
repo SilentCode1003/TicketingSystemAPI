@@ -192,6 +192,17 @@ router.get('/view', (req, res) => {
     }
 })
 
+router.post('/updateticket', (req, res) => {
+    try {
+        let ticketstatus = req.body.ticketstatus;
+
+    } catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
 //#region FUNCTION
 function GetConcernCode(concernname) {
     try {

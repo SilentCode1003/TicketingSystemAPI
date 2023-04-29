@@ -28,6 +28,8 @@ var issueRouter = require('./routes/issue');
 var assignticketRouter = require('./routes/assignticket');
 var dueRouter = require('./routes/due');
 var filterRouter = require('./routes/filter');
+var ticketcommentRouter = require('./routes/ticketcomment');
+
 
 
 var app = express();
@@ -85,6 +87,7 @@ app.use('/issue', issueRouter);
 app.use('/assignticket', assignticketRouter);
 app.use('/due', dueRouter);
 app.use('/filter', filterRouter);
+app.use('/ticketcomment', ticketcommentRouter);
 
 app.use(cors({
   origin: '*', // allow only requests from this domain
