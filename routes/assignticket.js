@@ -194,7 +194,43 @@ router.get('/view', (req, res) => {
 
 router.post('/updateticket', (req, res) => {
     try {
-        let ticketstatus = req.body.ticketstatus;
+        let ticketid = req.body.ticketid;
+        let newticketstatus = req.body.ticketstatus;
+        let commentby = req.body.commentby;
+        let commentdate = helper.GetCurrentDatetime();
+        let sql_getstatus = `select td_ticketstatus as previousticketstatus from request_ticket_detail where td_ticketid='${ticketid}'`;
+        let data = [];
+
+        mysql.SelectResult(sql_getstatus, (err, result) => {
+            if (err) console.error('Error: ', err);
+            let previousticketstatus = result[0].previousticketstatus;
+
+            data.push([
+                ticketid,
+                previousticketstatus,
+                newticketstatus,
+                commentby,
+                commentdate
+            ]);
+
+            mysql.InsertTable('ticket_update', data, (err, result) => {
+                if (err) console.error('Error: ', err);
+
+                console.log(result);
+            })
+
+            let sql_updaterequestticketdetail = `update request_ticket_detail set td_ticketstatus='${newticketstatus}' where td_ticketid='${ticketid}'`;
+
+            mysql.Update(sql_updaterequestticketdetail, (err, result) => {
+                if (err) console.error('Error: ', err);
+
+                console.log(result);
+            })
+
+            res.json({
+                msg: 'success'
+            })
+        })
 
     } catch (error) {
         res.json({

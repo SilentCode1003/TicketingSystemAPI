@@ -313,3 +313,21 @@ exports.TicketComment = (data) => {
 
     return dataResult;
 }
+
+exports.TicketUpdate = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            ticketupdateid: key.tu_ticketupdateid,
+            ticketid: key.tu_ticketid,
+            previousticketstatus: key.tu_previousticketstatus,
+            currentticketstatus: key.tu_currentticketstatus,
+            commentby: key.tu_commentby,
+            ommentdate: key.tu_commentdate,
+        })
+    });
+
+    return dataResult;
+}

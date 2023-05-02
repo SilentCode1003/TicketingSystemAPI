@@ -134,6 +134,10 @@ exports.Select = (sql, table, callback) => {
             if (table == 'TicketComment') {
                 callback(null, model.TicketComment(results));
             }
+
+            if (table == 'TicketUpdate') {
+                callback(null, model.TicketUpdate(results));
+            }
         });
 
     } catch (error) {
@@ -519,6 +523,22 @@ exports.InsertTable = (tablename, data, callback) => {
             tc_status,
             tc_commentby,
             tc_commentdate) VALUES ?`;
+
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'ticket_update') {
+        let sql = `INSERT INTO ticket_update(
+            tu_ticketid,
+            tu_previousticketstatus,
+            tu_currentticketstatus,
+            tu_commentby,
+            tu_commentdate) VALUES ?`;
 
         this.Insert(sql, data, (err, result) => {
             if (err) {
