@@ -73,7 +73,7 @@ router.post('/save', (req, res) => {
         let isassignto = req.body.isassignto;
         let isdepartment = req.body.isdepartment;
         let isattachement = req.body.isattachement;
-        let iscomment = req.body.filtername;
+        let iscomment = req.body.iscomment;
         let status = dictionary.GetValue(dictionary.ACT());
         let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
@@ -84,7 +84,7 @@ router.post('/save', (req, res) => {
             if (err) console.error('Error: ', err);
 
             if (result.length != 0) {
-                data.push([
+                data = [
                     isticketid,
                     issubject,
                     isconcern,
@@ -100,8 +100,9 @@ router.post('/save', (req, res) => {
                     isassignto,
                     isdepartment,
                     isattachement,
-                    iscomment
-                ]);
+                    iscomment,
+                    filtername
+                ];
 
                 Update_MasterFilter(data, filtername)
                     .then(result => {
@@ -161,26 +162,26 @@ router.post('/save', (req, res) => {
 function Update_MasterFilter(data, filtername) {
     return new Promise((resolve, reject) => {
         let sql = `update master_filter 
-        SET mf_isticketid=?,
-        mf_issubject=?,
-        mf_isconcern=?,
-        mf_isissue=?,
-        mf_isrequestername=?,
-        mf_isrequesteremail=?,
-        mf_isdescription=?,
-        mf_ispriority=?,
-        mf_isticketstatus=?,
-        mf_isdatecreated=?,
-        mf_isduedate=?,
-        mf_isstatusdetail=?,
-        mf_isassignto=?,
-        mf_isdepartment=?,
-        mf_isattachement=?,
-        mf_iscomment=?,
-        mf_status=?
-        where mf_filtername='${filtername}'`;
+        SET mf_isticketid='${data[0]}',
+        mf_issubject='${data[1]}',
+        mf_isconcern='${data[2]}',
+        mf_isissue='${data[3]}',
+        mf_isrequestername='${data[4]}',
+        mf_isrequesteremail='${data[5]}',
+        mf_isdescription='${data[6]}',
+        mf_ispriority='${data[7]}',
+        mf_isticketstatus='${data[8]}',
+        mf_isdatecreated='${data[9]}',
+        mf_isduedate='${data[10]}',
+        mf_isstatusdetail='${data[11]}',
+        mf_isassignto='${data[12]}',
+        mf_isdepartment='${data[13]}',
+        mf_isattachement='${data[14]}',
+        mf_iscomment='${data[15]}',
+        mf_status='${data[16]}'
+        where mf_filtername='${data[17]}'`;
 
-        mysql.UpdateMultiple(sql, data, (err, result) => {
+        mysql.Update(sql, data, (err, result) => {
             if (err) reject(err);
             console.log(result);
             resolve(result);

@@ -2,41 +2,138 @@
     $(document).ready(function () {
         LoadTable();
 
-        // $(document).on('click', '#addBtn', function () {
-        //     let departmentname = $('#departmentname').val();
+        $(document).on('click', '#addBtn', function () {
+            let filtername = $('#filtername').val();
+            let isticketid = document.getElementById('isticketid');
+            let issubject = document.getElementById('issubject');
+            let isconcern = document.getElementById('isconcern');
+            let isdescription = document.getElementById('isdescription');
+            let ispriority = document.getElementById('ispriority');
+            let isticketstatus = document.getElementById('isticketstatus');
+            let isassignto = document.getElementById('isassignto');
+            let isdepartment = document.getElementById('isdepartment');
+            let isissue = document.getElementById('isissue');
+            let isrequestername = document.getElementById('isrequestername');
+            let isrequesteremail = document.getElementById('isrequesteremail');
+            let isdatecreated = document.getElementById('isdatecreated');
+            let isduedate = document.getElementById('isduedate');
+            let isstatusdetail = document.getElementById('isstatusdetail');
+            let iscomment = document.getElementById('iscomment');
+            let isattachement = document.getElementById('isattachement');
 
-        //     var message = "";
+            let ticketid = '1';
+            let subject = '1';
+            let concern = '1';
+            let description = '1';
+            let priority = '1';
+            let ticketstatus = '1';
+            let assignto = '1';
+            let department = '1';
+            let issue = '1';
+            let requestername = '1';
+            let requesteremail = '1';
+            let datecreated = '1';
+            let duedate = '1';
+            let statusdetail = '1';
+            let comment = '1';
+            let attachement = '1';
 
-        //     console.log('clicked!');
 
-        //     if (departmentname == '') { message += 'DEPARTMENT NAME ' }
+            if (!isticketid.checked) {
+                ticketid = '0';
+            }
+            if (!issubject.checked) {
+                subject = '0';
+            }
+            if (!isconcern.checked) {
+                concern = '0';
+            }
+            if (!isdescription.checked) {
+                description = '0';
+            }
+            if (!ispriority.checked) {
+                priority = '0';
+            }
+            if (!isticketstatus.checked) {
+                ticketstatus = '0';
+            }
+            if (!isassignto.checked) {
+                assignto = '0';
+            }
+            if (!isdepartment.checked) {
+                department = '0';
+            }
+            if (!isissue.checked) {
+                issue = '0';
+            }
+            if (!isrequestername.checked) {
+                requestername = '0';
+            }
+            if (!isrequesteremail.checked) {
+                requesteremail = '0';
+            }
+            if (!isdatecreated.checked) {
+                datecreated = '0';
+            }
+            if (!isduedate.checked) {
+                duedate = '0';
+            }
+            if (!isstatusdetail.checked) {
+                statusdetail = '0';
+            }
+            if (!iscomment.checked) {
+                comment = '0';
+            }
+            if (!isattachement.checked) {
+                attachement = '0';
+            }
 
-        //     if (message != '') {
-        //         warning('Required', `Please fillup ${message} field`);
-        //     }
-        //     else {
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/department/save',
-        //             data: {
-        //                 departmentname: departmentname,
-        //             },
-        //             success: function (result) {
-        //                 if (result.msg == 'success') {
-        //                     LoadTable();
-        //                     success('Saved', 'Successfully')
-        //                 }
 
-        //                 if (result.msg == 'exist') {
-        //                     warning('Exist', `${departmentname} has already registered!`)
-        //                 }
-        //             },
-        //             error: function (err) {
-        //                 errormsg(err);
-        //             }
-        //         })
-        //     }
-        // })
+            var message = "";
+            if (filtername == '') { message += 'FILTER NAME ' }
+
+            if (message != '') {
+                warning('Required', `Please fillup ${message} field`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/filter/save',
+                    data: {
+                        filtername: filtername,
+                        isticketid: ticketid,
+                        issubject: subject,
+                        isconcern: concern,
+                        isissue: description,
+                        isrequestername: priority,
+                        isrequesteremail: ticketstatus,
+                        isdescription: assignto,
+                        ispriority: department,
+                        isticketstatus: issue,
+                        isdatecreated: requestername,
+                        isduedate: requesteremail,
+                        isstatusdetail: datecreated,
+                        isassignto: duedate,
+                        isdepartment: statusdetail,
+                        isattachement: attachement,
+                        iscomment: comment
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${filtername} has already registered!`)
+                        }
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
 
 
         function LoadTable() {
@@ -49,6 +146,7 @@
                 'info': false,
                 'scrollY': 550,
                 'scrollCollapse': true,
+                'scrollX': 550,
                 'serverMethod': 'GET',
                 'ajax': {
                     'url': '/filter/load',
@@ -69,27 +167,27 @@
                             }
 
                             finalData.push({
-                                filtercode: item.mf_filtercode,
-                                filtername: item.mf_filtername,
-                                isticketid: item.mf_isticketid,
-                                issubject: item.mf_issubject,
-                                isconcern: item.mf_isconcern,
-                                isissue: item.mf_isissue,
-                                isrequestername: item.mf_isrequestername,
-                                isrequesteremail: item.mf_isrequesteremail,
-                                isdescription: item.mf_isdescription,
-                                ispriority: item.mf_ispriority,
-                                isticketstatus: item.mf_isticketstatus,
-                                isdatecreated: item.mf_isdatecreated,
-                                isduedate: item.mf_isduedate,
-                                isstatusdetail: item.mf_isstatusdetail,
-                                isassignto: item.mf_isassignto,
-                                isdepartment: item.mf_isdepartment,
-                                isattachement: item.mf_isattachement,
-                                iscomment: item.mf_iscomment,
-                                status: item.mf_status,
-                                createdby: item.mf_createdby,
-                                createddate: item.mf_createddate,
+                                filtercode: item.filtercode,
+                                filtername: item.filtername,
+                                isticketid: item.isticketid,
+                                issubject: item.issubject,
+                                isconcern: item.isconcern,
+                                isissue: item.isissue,
+                                isrequestername: item.isrequestername,
+                                isrequesteremail: item.isrequesteremail,
+                                isdescription: item.isdescription,
+                                ispriority: item.ispriority,
+                                isticketstatus: item.isticketstatus,
+                                isdatecreated: item.isdatecreated,
+                                isduedate: item.isduedate,
+                                isstatusdetail: item.isstatusdetail,
+                                isassignto: item.isassignto,
+                                isdepartment: item.isdepartment,
+                                isattachement: item.isattachement,
+                                iscomment: item.iscomment,
+                                status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
                                 action: action,
                             })
 
