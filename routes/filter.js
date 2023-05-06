@@ -101,10 +101,11 @@ router.post('/save', (req, res) => {
                     isdepartment,
                     isattachement,
                     iscomment,
+                    status,
                     filtername
                 ];
 
-                Update_MasterFilter(data, filtername)
+                Update_MasterFilter(data)
                     .then(result => {
 
                         console.log(result);
@@ -200,7 +201,7 @@ router.post('/apply', (req, res) => {
 })
 
 //#region FUNCITONS
-function Update_MasterFilter(data, filtername) {
+function Update_MasterFilter(data) {
     return new Promise((resolve, reject) => {
         let sql = `update master_filter 
         SET mf_isticketid='${data[0]}',
@@ -222,7 +223,7 @@ function Update_MasterFilter(data, filtername) {
         mf_status='${data[16]}'
         where mf_filtername='${data[17]}'`;
 
-        mysql.Update(sql, data, (err, result) => {
+        mysql.Update(sql, (err, result) => {
             if (err) reject(err);
             console.log(result);
             resolve(result);
