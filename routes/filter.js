@@ -74,7 +74,7 @@ router.post('/save', (req, res) => {
         let isdepartment = req.body.isdepartment;
         let isattachement = req.body.isattachement;
         let iscomment = req.body.iscomment;
-        let status = dictionary.GetValue(dictionary.ACT());
+        let status = dictionary.GetValue(dictionary.INACT());
         let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
@@ -151,6 +151,47 @@ router.post('/save', (req, res) => {
                 });
             }
         })
+    } catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
+router.post('/apply', (req, res) => {
+    try {
+        let filtername = req.body.filtername;
+        let updatestatus = dictionary.GetValue(dictionary.INACT());
+        let status = dictionary.GetValue(dictionary.ACT());
+        let sql_update = `update master_filter set mf_status='${updatestatus}' where mf_filtername != '${filtername}'`;
+        let sql = `update master_filter set mf_status='${status}' where mf_filtername='${filtername}'`;
+
+        mysql.Update(sql_update, (err, result) => {
+            if (err) {
+                console.error('Error: ', err);
+                return es.json({
+                    msg: err
+                })
+            }
+
+            console.log(result);
+
+            mysql.Update(sql, (err, result) => {
+                if (err) {
+                    console.error('Error: ', err);
+                    return es.json({
+                        msg: err
+                    })
+                }
+
+                console.log(result);
+
+                res.json({
+                    msg: 'success'
+                })
+            })
+        })
+
     } catch (error) {
         res.json({
             msg: error
