@@ -75,7 +75,7 @@ router.post('/save', (req, res) => {
         let isattachement = req.body.isattachement;
         let iscomment = req.body.iscomment;
         let status = dictionary.GetValue(dictionary.INACT());
-        let createdby = req.session.fullname;
+        let createdby = req.session.fullname == null ? req.body.createdby: req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
         let sql_check = `select * from master_filter where mf_filtername='${filtername}'`;
