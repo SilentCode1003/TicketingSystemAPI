@@ -56,10 +56,39 @@ router.get('/load', (req, res) => {
     }
 })
 
+router.post('/getallticket', (req, res) => {
+    try {
+        let datefrom = req.body.datefrom;
+        let dateto = req.body.dateto;
+        let sql = `select * from request_ticket_detail where td_datecreated between '${datefrom}' and '${dateto}'`;
+
+        mysql.Select(sql, 'RequestTicketDetail', (err, result) => {
+            if (err) {
+                return res.json({
+                    msg: err
+                })
+            }
+
+            console.log(helper.GetCurrentDatetime());
+
+            res.json({
+                msg: 'success',
+                data: result
+            })
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
 router.post('/getticketstatus', (req, res) => {
     try {
         let status = req.body.ticketstatus;
-        let sql = `select * from request_ticket_detail where td_ticketstatus='${status}'`;
+        let datefrom = req.body.datefrom;
+        let dateto = req.body.dateto;
+        let sql = `select * from request_ticket_detail where td_ticketstatus='${status}' and td_datecreated between '${datefrom}' and '${dateto}'`;
 
         mysql.Select(sql, 'RequestTicketDetail', (err, result) => {
             if (err) {
