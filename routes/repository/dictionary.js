@@ -24,6 +24,7 @@ exports.GetValue = (abr) => {
     if (abr == 'REM') return 'REMOVE';
     if (abr == 'UPD') return 'UPDATE';
     if (abr == 'INST') return 'INST';
+    if (abr == 'RSD') return 'RESOLVED';
 }
 
 //#region STATUS CODE
@@ -121,5 +122,9 @@ exports.INST = () => {
 
 exports.INACT = () => {
     return 'INACT';
+}
+
+exports.RSD = () => {
+    return 'RSD';
 }
 //#endregion

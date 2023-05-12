@@ -32,7 +32,34 @@ module.exports = router;
 
 router.get('/load', (req, res) => {
     try {
-        let sql = `select * from request_ticket_detail`;
+        let status = dictionary.GetValue(dictionary.RSD());
+        let sql = `select * from request_ticket_detail where not td_ticketstatus='${status}'`;
+
+        mysql.Select(sql, 'RequestTicketDetail', (err, result) => {
+            if (err) {
+                return res.json({
+                    msg: err
+                })
+            }
+
+            console.log(helper.GetCurrentDatetime());
+
+            res.json({
+                msg: 'success',
+                data: result
+            })
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
+router.post('/getticketstatus', (req, res) => {
+    try {
+        let status = req.body.ticketstatus;
+        let sql = `select * from request_ticket_detail where td_ticketstatus='${status}'`;
 
         mysql.Select(sql, 'RequestTicketDetail', (err, result) => {
             if (err) {
@@ -239,6 +266,32 @@ router.post('/updateticket', (req, res) => {
     }
 })
 
+router.post('/getticket', (req, res) => {
+    try {
+        let ticketid = req.body.ticketid;
+        let sql = `select * from request_ticket_detail where td_ticketid='${ticketid}'`;
+
+        mysql.Select(sql, 'RequestTicketDetail', (err, result) => {
+            if (err) {
+                return res.json({
+                    msg: err
+                })
+            }
+
+            console.log(helper.GetCurrentDatetime());
+
+            res.json({
+                msg: 'success',
+                data: result
+            })
+        });
+
+    } catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
 //#region FUNCTION
 function GetConcernCode(concernname) {
     try {
