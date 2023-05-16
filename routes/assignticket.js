@@ -142,7 +142,7 @@ router.post('/save', (req, res) => {
                         let count = result;
                         let concerncode = code;
                         let currentcount = count + 1;
-                        let ticketid = `${helper.GetCurrentYear()}${helper.GetCurrentMonth()}${helper.GetCurrentDay()}${concerncode}${currentcount}`;
+                        let ticketid = `SR-${helper.GetCurrentYear()}${concerncode}${currentcount}`;
                         let subject = `${concerntype}[${requestername}]${ticketid}`
 
                         GetDueDate(prioritytype)
