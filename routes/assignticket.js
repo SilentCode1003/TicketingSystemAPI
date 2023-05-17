@@ -36,7 +36,7 @@ router.get("/load", (req, res) => {
   try {
     let resolved = dictionary.GetValue(dictionary.RSD());
     let closed = dictionary.GetValue(dictionary.CLSD());
-    let sql = `select * from request_ticket_detail where not td_ticketstatus in ('${resolved}',${closed})`;
+    let sql = `select * from request_ticket_detail where not td_ticketstatus in ('${resolved}','${closed}')`;
 
     mysql.Select(sql, "RequestTicketDetail", (err, result) => {
       if (err) {
