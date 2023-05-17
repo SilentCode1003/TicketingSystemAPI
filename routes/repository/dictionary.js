@@ -24,6 +24,7 @@ exports.GetValue = (abr) => {
   if (abr == "UPD") return "UPDATE";
   if (abr == "INST") return "INST";
   if (abr == "RSD") return "RESOLVED";
+  if (abr == "CLSD") return "CLOSED";
   if (abr == "OSR") return "ONSITE SERVICE REQUEST";
 };
 
@@ -126,6 +127,10 @@ exports.INACT = () => {
 
 exports.RSD = () => {
   return "RSD";
+};
+
+exports.CLSD = () => {
+  return "CLSD";
 };
 
 exports.OSR = () => {
