@@ -131,9 +131,10 @@ router.post("/save", (req, res) => {
     // let duedate = 'number of days base on priority';
     // let statusdetail = 'Due in 3 days';
     let status = dictionary.GetValue(dictionary.ACT());
-    let createdby = req.session.fullname;
+    let assignby = "DEV42";
     let createdate = helper.GetCurrentDatetime();
     let data = [];
+    let assign_ticket_details = [];
 
     console.log(attachment);
 
@@ -178,7 +179,17 @@ router.post("/save", (req, res) => {
                   comment,
                 ]);
 
-                console.log(data);
+                assign_ticket_details.push([
+                  createdate,
+                  assignedto,
+                  ticketid,
+                  ticketstatus,
+                  "",
+                  status,
+                  assignby,
+                ]);
+
+                // console.log(data);
 
                 mysql.InsertTable(
                   "request_ticket_detail",
@@ -188,9 +199,18 @@ router.post("/save", (req, res) => {
 
                     console.log(result);
 
-                    res.json({
-                      msg: "success",
-                    });
+                    mysql.InsertTable(
+                      "assign_ticket_details",
+                      assign_ticket_details,
+                      (err, result) => {
+                        if (err) console.error("Error: ", err);
+                        console.log(result);
+
+                        res.json({
+                          msg: "success",
+                        });
+                      }
+                    );
                   }
                 );
               })
@@ -314,6 +334,92 @@ router.post("/getticket", (req, res) => {
       }
 
       console.log(helper.GetCurrentDatetime());
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getassignticket", (req, res) => {
+  try {
+    let fullname = req.body.fullname;
+    let sql = `select 
+    td_ticketid as ticketid,
+    td_subject as subject,
+    td_concern as concern,
+    td_issue as issue,
+    td_requestername as requestername,
+    td_requesteremail as requesteremail,
+    td_description as description,
+    td_priority as priority,
+    td_ticketstatus as ticketstatus,
+    td_datecreated as datecreated,
+    td_duedate as duedate,
+    td_statusdetail as statusdetail,
+    td_assignedto as assignedto,
+    td_department as department,
+    td_attachement as attachement,
+    td_comment as comment
+    from assign_ticket_details
+    inner join request_ticket_detail on atd_ticketid = td_ticketid
+    where atd_status = 'ACTIVE'
+    and not td_ticketstatus in ('RESOLVED','CLOSED')
+    and td_assignedto='${fullname}'
+    group by td_ticketid`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getassignhistory", (req, res) => {
+  try {
+    let fullname = req.body.fullname;
+    let sql = `select 
+    td_ticketid as ticketid,
+    td_subject as subject,
+    td_concern as concern,
+    td_issue as issue,
+    td_requestername as requestername,
+    td_requesteremail as requesteremail,
+    td_description as description,
+    td_priority as priority,
+    td_ticketstatus as ticketstatus,
+    td_datecreated as datecreated,
+    td_duedate as duedate,
+    td_statusdetail as statusdetail,
+    td_assignedto as assignedto,
+    td_department as department,
+    td_attachement as attachement,
+    td_comment as comment
+    from assign_ticket_details
+    inner join request_ticket_detail on atd_ticketid = td_ticketid
+    where td_assignedto='${fullname}'
+    group by td_ticketid`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
 
       res.json({
         msg: "success",
