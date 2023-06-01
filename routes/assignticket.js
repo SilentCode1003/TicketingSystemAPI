@@ -432,6 +432,30 @@ router.post("/getassignhistory", (req, res) => {
     });
   }
 });
+
+router.post("/getstatuscount", (req, res) => {
+  try {
+    let ticketstatus = req.body.ticketstatus;
+    let datefrom = req.body.datefrom;
+    let dateto = req.body.dateto;
+    let sql = `SELECT count(*) as ticketcount from request_ticket_detail where td_ticketstatus='${ticketstatus}' and td_datecreated between '${datefrom}' and '${dateto}'`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
 //#region FUNCTION
 function GetConcernCode(concernname) {
   try {
