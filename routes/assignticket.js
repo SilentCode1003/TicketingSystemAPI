@@ -456,6 +456,35 @@ router.post("/getstatuscount", (req, res) => {
     });
   }
 });
+
+router.get("/getassignticketdetail", (req, res) => {
+  try {
+    let sql = `select 
+    atd_ticketid as ticketid,
+    td_subject as subject,
+    atd_assignto as assignto,
+    atd_assignby as assignby
+    from assign_ticket_details
+    inner join request_ticket_detail on  atd_ticketid = td_ticketid
+    where atd_ticketstatus='${dictionary.GetValue(dictionary.DND())}'
+    order by atd_ticketid`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
 //#region FUNCTION
 function GetConcernCode(concernname) {
   try {

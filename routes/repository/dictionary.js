@@ -26,6 +26,7 @@ exports.GetValue = (abr) => {
   if (abr == "RSD") return "RESOLVED";
   if (abr == "CLSD") return "CLOSED";
   if (abr == "OSR") return "ONSITE SERVICE REQUEST";
+  if (abr == "DND") return "DONE";
 };
 
 //#region STATUS CODE
@@ -135,5 +136,8 @@ exports.CLSD = () => {
 
 exports.OSR = () => {
   return "OSR";
+};
+exports.DND = () => {
+  return "DND";
 };
 //#endregion
