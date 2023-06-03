@@ -466,7 +466,7 @@ router.get("/getassignticketdetail", (req, res) => {
     atd_assignby as assignby
     from assign_ticket_details
     inner join request_ticket_detail on  atd_ticketid = td_ticketid
-    where atd_ticketstatus='${dictionary.GetValue(dictionary.DND())}'
+    where atd_status='${dictionary.GetValue(dictionary.DND())}'
     order by atd_ticketid`;
 
     mysql.SelectResult(sql, (err, result) => {
@@ -477,6 +477,28 @@ router.get("/getassignticketdetail", (req, res) => {
       res.json({
         msg: "success",
         data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/updateassigndetail", (req, res) => {
+  try {
+    let ticketid = req.body.ticketid;
+    let status = dictionary.GetValue(dictionary.DND());
+    let reportdate = helper.GetCurrentDatetime();
+    let sql = `update assign_ticket_details set atd_status='${status}', atd_reportdate='${reportdate}' where atd_ticketid='${ticketid}'`;
+
+    mysql.Update(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
+      res.json({
+        msg: "success",
       });
     });
   } catch (error) {
