@@ -1,104 +1,126 @@
 <script>
-    $(document).ready(function () {
-        LoadTable();
+  $(document).ready(function () {
+    LoadTable();
 
-        $(document).on('click', '#addBtn', function () {
-            let departmentname = $('#departmentname').val();
+    $(document).on("click", "#addBtn", function () {
+      let departmentname = $("#departmentname").val();
 
-            var message = "";
+      var message = "";
 
-            console.log('clicked!');
+      console.log("clicked!");
 
-            if (departmentname == '') { message += 'DEPARTMENT NAME ' }
+      if (departmentname == "") {
+        message += "DEPARTMENT NAME ";
+      }
 
-            if (message != '') {
-                warning('Required', `Please fillup ${message} field`);
+      if (message != "") {
+        warning("Required", `Please fillup ${message} field`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/department/save",
+          data: {
+            departmentname: departmentname,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/department/save',
-                    data: {
-                        departmentname: departmentname,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
 
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${departmentname} has already registered!`)
-                        }
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+            if (result.msg == "exist") {
+              warning("Exist", `${departmentname} has already registered!`);
             }
-        })
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
 
-
-        function LoadTable() {
-            $('#department-table').DataTable({
-                'destroy': true,
-                'processing': true,
-                'serverSide': true,
-                'paging': false,
-                'searching': false,
-                'info': false,
-                'scrollY': 550,
-                'scrollCollapse': true,
-                'serverMethod': 'GET',
-                'ajax': {
-                    'url': '/department/load',
-                    'dataSrc': (json) => {
-                        var finalData = [];
-                        var data = json.data;
-
-                        console.log(data);
-                        $.each(data, (key, item) => {
-                            var action = '';
-                            var status = item.status;
-
-                            if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
-                            }
-                            if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
-                            }
-
-                            finalData.push({
-                                departmentcode: item.departmentcode,
-                                departmentname: item.departmentname,
-                                status: item.status,
-                                createdby: item.createdby,
-                                createddate: item.createddate,
-                                action: action,
-                            })
-
-                        })
-
-                        return finalData;
-                    },
-                },
-                'columnDefs': [{
-                    targets: 1,
-                    className: 'td-indent',
-                }],
-                'columns': [
-                    { data: 'departmentcode' },
-                    { data: 'departmentname' },
-                    { data: 'status' },
-                    { data: 'createdby' },
-                    { data: 'createddate' },
-                    { data: 'action' },
-                ],
-                initComplete: function () {
-                    console.log('init complete');
-                    hideloader();
-                }
-            })
+    $("#search").on("keyup", function () {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("search");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("department-table");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
-    })
+      }
+    });
+
+    function LoadTable() {
+      $("#department-table").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 550,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/department/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
+
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>';
+              }
+
+              finalData.push({
+                departmentcode: item.departmentcode,
+                departmentname: item.departmentname,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "departmentcode" },
+          { data: "departmentname" },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+          hideloader();
+        },
+      });
+    }
+  });
 </script>
