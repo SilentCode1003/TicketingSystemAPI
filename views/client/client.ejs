@@ -1,43 +1,191 @@
-<div class="row">
-    <div class="col-xl-3 col-lg-3 col-sm-3">
-        <div class="entry-area">
-            <input class="entry-input" type="text" placeholder="FULLNAME" id="fullname" name="fullname">
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row md-4">
+            <div class="col-md-4">
+              <input
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+                type="file"
+                name="excel"
+                id="excel"
+              />
+            </div>
+            <div class="col-md-4">
+              <button
+                id="uploadBtn"
+                name="uploadBtn"
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+              >
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                Upload
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="entry-area">
-            <input class="entry-input" type="text" placeholder="USERNAME" id="username" name="username">
-        </div>
-        <div class="entry-area">
-            <input class="entry-input" type="password" placeholder="PASSWORD" id="password" name="password">
-        </div>
-        <div class="entry-area">
-            <input class="entry-input" type="email" placeholder="EMAIL" id="email" name="email">
-        </div>
-        <div class="entry-area">
-            <input class="entry-input" type="tel" placeholder="CONTACT NO" id="contactno" name="contactno">
-        </div>
-
-        <div class="entry-area">
-            <button id="addBtn" name="addBtn">ADD</button>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<hr>
+  <div class="row mb-2">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <label class="form-label" for="fullname">Fullname</label>
+              <input
+                id="fullname"
+                name="fullname"
+                type="text"
+                class="form-control"
+                placeholder="Enter Fullname"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+                maxlength="6"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="employeeError"
+                style="display: none"
+              >
+                Please enter Fullname
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label class="form-label" for="username">Username</label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                class="form-control"
+                placeholder="Enter Username"
+                aria-label="username"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="password">Password</label>
+              <input
+                id="password"
+                name="password"
+                minlength="8"
+                type="password"
+                class="form-control"
+                placeholder="Enter Password"
+                aria-label="password"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label class="form-label" for="contactnumber"
+                >Contact number</label
+              >
+              <input
+                id="contactnumber"
+                name="contactnumber"
+                type="tel"
+                class="form-control"
+                placeholder="Enter your contact number"
+                aria-label="contactnumber"
+                aria-describedby="basic-addon1"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="contactnumbererror"
+                style="display: none"
+              >
+                Please enter a valid Contact Number.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="departmentname"
+                >E-mail address</label
+              >
+              <input
+                id="email"
+                name="email"
+                type="email"
+                class="form-control"
+                placeholder="Enter your email add"
+                aria-label="email"
+                aria-describedby="basic-addon1"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="emailerror"
+                style="display: none"
+              >
+                Please enter a valid email address.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mt-4">
+            <button
+              id="addBtn"
+              name="addBtn"
+              class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div>
-    <table id="client-table">
-        <thead>
-            <th>CLIENT ID</th>
-            <th>FULLNAME</th>
-            <th>USERNAME</th>
-            <th>PASSWORD</th>
-            <th>EMAIL</th>
-            <th>CONTACT NO</th>
-            <th>STATUS</th>
-            <th>CREATEDBY</th>
-            <th>CREATEDDATE</th>
-            <th>ACTIONS</th>
-        </thead>
-        <tbody></tbody>
-    </table>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
+        </div>
+        <div class="col-md-6">
+          <input
+            id="search"
+            name="search"
+            type="text"
+            class="form-control"
+            placeholder="Search Fullname"
+            aria-label="search"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive-sm">
+        <table
+          class="table table-bordered table-sm"
+          id="client-table"
+          width="100%"
+          cellspacing="10"
+        >
+          <thead>
+            <tr>
+              <th class="col-1 text-start">CLIENT ID</th>
+              <th class="col-3 text-center">FULLNAME</th>
+              <th class="col-2 text-center">USERNAME</th>
+              <th class="col-2 text-center">PASSWORD</th>
+              <th class="col-2 text-center">EMAIL</th>
+              <th class="col-2 text-end">CONTACT NO</th>
+              <th class="col-2 text-end">STATUS</th>
+              <th class="col-2 text-end">CREATEDBY</th>
+              <th class="col-2 text-end">CREATEDDATE</th>
+              <th class="col-2 text-end">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

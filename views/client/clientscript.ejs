@@ -1,121 +1,272 @@
 <script>
-    $(document).ready(function () {
-        LoadTable();
+  $(document).ready(function () {
+    LoadTable();
 
-        $(document).on('click', '#addBtn', function () {
-            let fullname = $('#fullname').val();
-            let username = $('#username').val();
-            let password = $('#password').val();
-            let email = $('#email').val();
-            let contactno = $('#contactno').val();
-            var message = "";
+    $(document).on("click", "#addBtn", function () {
+      let fullname = $("#fullname").val();
+      let username = $("#username").val();
+      let password = $("#password").val();
+      let email = $("#email").val();
+      let contactno = $("#contactnumber").val();
+      var message = "";
 
-            if (fullname == '') { message += 'FULLNAME ' }
-            if (username == '') { message += 'USERNAME ' }
-            if (password == '') { message += 'PASSWORD ' }
-            if (email == '') { message += 'EMAIL ' }
-            if (contactno == '') { message += 'CONTACT NO ' }
+      if (fullname == "") {
+        message += "FULLNAME ";
+      }
+      if (username == "") {
+        message += "USERNAME ";
+      }
+      if (password == "") {
+        message += "PASSWORD ";
+      }
+      if (email == "") {
+        message += "EMAIL ";
+      }
+      if (contactno == "") {
+        message += "CONTACT NO ";
+      }
 
-            if (message != '') {
-                warning('Required', `Please fillup ${message} field`);
+      if (message != "") {
+        warning("Required", `Please fillup ${message} field`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/client/save",
+          data: {
+            fullname: fullname,
+            username: username,
+            password: password,
+            email: email,
+            contactno: contactno,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/client/save',
-                    data: {
-                        fullname: fullname,
-                        username: username,
-                        password: password,
-                        email: email,
-                        contactno: contactno,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
 
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${fullname} has already registered!`)
-                        }
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+            if (result.msg == "exist") {
+              warning("Exist", `${fullname} has already registered!`);
             }
-        })
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
 
+    $(document).on("click", "#uploadBtn", function () {
+      //   console.log("clicked!");
+      showloader();
+      UploadProcess();
+    });
 
-        function LoadTable() {
-            $('#client-table').DataTable({
-                'destroy': true,
-                'processing': true,
-                'serverSide': true,
-                'paging': false,
-                'searching': false,
-                'info': false,
-                'scrollY': 400,
-                'scrollCollapse': true,
-                'serverMethod': 'GET',
-                'ajax': {
-                    'url': '/client/load',
-                    'dataSrc': (json) => {
-                        var finalData = [];
-                        var data = json.data;
-
-                        console.log(data);
-                        $.each(data, (key, item) => {
-                            var action = '';
-                            var status = item.status;
-
-                            if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
-                            }
-                            if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
-                            }
-
-                            finalData.push({
-                                clientid: item.clientid,
-                                fullname: item.fullname,
-                                username: item.username,
-                                password: item.password,
-                                email: item.email,
-                                contactnumber: item.contactnumber,
-                                status: item.status,
-                                createdby: item.createdby,
-                                createddate: item.createddate,
-                                action: action,
-                            })
-
-                        })
-
-                        return finalData;
-                    },
-                },
-                'columnDefs': [{
-                    targets: 1,
-                    className: 'td-indent',
-                }],
-                'columns': [
-                    { data: 'clientid' },
-                    { data: 'fullname' },
-                    { data: 'username' },
-                    { data: 'password' },
-                    { data: 'email' },
-                    { data: 'contactnumber' },
-                    { data: 'status' },
-                    { data: 'createdby' },
-                    { data: 'createddate' },
-                    { data: 'action' },
-                ],
-                initComplete: function () {
-                    console.log('init complete');
-                    hideloader();
-                }
-            })
+    $("#search").on("keyup", function () {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("search");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("client-table");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
-    })
+      }
+    });
+
+    $.fn.DataTable.ext.search.push((settings, row, index, rowData) =>
+      [...$(dataTable.row(index).node()).find("td")]
+        .map((td) => $(td).attr("data-search"))
+        .some((tdAttr) => tdAttr.includes($("#search").val().toLowerCase()))
+    );
+
+    // function DataSearch(value) {
+    //   table = $('#client-table').DataTable();
+    //   table.search(value).draw();
+    // }
+
+    function LoadTable() {
+      $("#client-table").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/client/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
+
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>';
+              }
+              finalData.push({
+                clientid: item.clientid,
+                fullname: item.fullname,
+                username: item.username,
+                password: item.password,
+                email: item.email,
+                contactnumber: item.contactnumber,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "clientid" },
+          { data: "fullname" },
+          { data: "username" },
+          { data: "password" },
+          { data: "email" },
+          { data: "contactnumber" },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+          hideloader();
+        },
+      });
+    }
+
+    function UploadProcess() {
+      //Reference the FileUpload element.
+      var fileUpload = document.getElementById("excel");
+
+      //Validate whether File is valid Excel file.
+      var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv|.ods)$/;
+      if (regex.test(fileUpload.value.toLowerCase())) {
+        if (typeof FileReader != "undefined") {
+          var reader = new FileReader();
+
+          //For Browsers other than IE.
+          if (reader.readAsBinaryString) {
+            reader.onload = function (e) {
+              GetTableFromExcel(e.target.result);
+            };
+            reader.readAsBinaryString(fileUpload.files[0]);
+          } else {
+            //For IE Browser.
+            reader.onload = function (e) {
+              var data = "";
+              var bytes = new Uint8Array(e.target.result);
+              for (var i = 0; i < bytes.byteLength; i++) {
+                data += String.fromCharCode(bytes[i]);
+              }
+              GetTableFromExcel(data);
+            };
+            reader.readAsArrayBuffer(fileUpload.files[0]);
+          }
+        } else {
+          warning("Upload", "This browser does not support HTML5.");
+        }
+      } else {
+        warning("Upload", "Please upload a valid Excel file.");
+      }
+    }
+
+    function GetTableFromExcel(data) {
+      //Read the Excel File data in binary
+      var workbook = XLSX.read(data, {
+        type: "binary",
+      });
+
+      //get the name of First Sheet.
+      var Sheet = workbook.SheetNames[0];
+
+      //Read all rows from First Sheet into an JSON array.
+      var excelRows = XLSX.utils.sheet_to_row_object_array(
+        workbook.Sheets[Sheet]
+      );
+      var columns = Object.keys(excelRows[0]);
+
+      //Create a HTML Table element.
+      var myTable = document.createElement("table");
+      myTable.border = "1";
+
+      //Add the header row.
+      var row = myTable.insertRow(-1);
+
+      var dataExcelArr = [];
+      //Add the data rows from Excel file.
+      for (var i = 0; i < excelRows.length; i++) {
+        //Add the data row.
+        var data = [];
+        var row = myTable.insertRow(-1);
+        for (var j = 0; j < columns.length; j++) {
+          var cell = row.insertCell(-1);
+          cell.innerHTML = excelRows[i][columns[j]];
+          data.push({
+            item: excelRows[i][columns[j]],
+          });
+        }
+        dataExcelArr.push({
+          storeno: data[0].item,
+          storename: data[1].item,
+          email: data[2].item,
+          contact: data[3].item,
+        });
+      }
+      excelDataSave(dataExcelArr);
+    }
+
+    function excelDataSave(data) {
+      var dataraw = JSON.stringify(data, null, 2);
+      $.ajax({
+        type: "POST",
+        url: "/client/excelsave",
+        data: {
+          data: dataraw,
+        },
+        success: function (result) {
+          LoadTable();
+          if (result.msg != "success") {
+            warning("Duplicate", `Some data already exist on the database`);
+          } else {
+            success("Saved!", "Data saved!");
+          }
+
+          // $('#item-tbl').DataTable().ajax.reload();
+        },
+        error: function (result) {
+          error(result.data);
+        },
+      });
+      hideloader();
+    }
+  });
 </script>

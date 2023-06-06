@@ -1,34 +1,61 @@
-<!-- Outer Row -->
-<div class="row justify-content-center">
-
-    <div class="col-xl-10 col-lg-12 col-md-9">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row login">
-                    <div class="col-lg-6 d-none d-lg-block center">
-                        <img class="login-img" src="/images/logo.jpg">
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 mb-4">TICKETING MASTERS</h1>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="username"
-                                    placeholder="Username">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control form-control-user" id="password"
-                                    placeholder="Password">
-                            </div>
-                            <button class="" id="loginBtn"
-                                name="loginBtn">LOGIN</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="row">
+      <img
+        src="/images/img/logo(White).png"
+        class="loginImg"
+        alt="Responsive image"
+      />
     </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div class="cardlogin">
+      <div class="card-header loginheader mt-4">
+        <div class="row text-center">
+          <div class="col-md-12">
+            <h3>Sign In</h3>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <label class="form-label" for="mu_username">Username</label>
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control mr-2"
+            />
+          </div>
+        </div>
+        <div class="row mb-2">
+          <label class="form-label" for="mu_username">Passcode</label>
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control mr-2"
+            />
+          </div>
+        </div>
+        <div class="form-group btlogin text-center">
+          <button
+            name="loginBtn"
+            id="loginBtn"
+            class="d-none d-sm-inline-block btn-sm btn-outline-primary btn btnclr shadow-sm w-50"
+          >
+            Log in
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

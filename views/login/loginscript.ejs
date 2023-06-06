@@ -1,61 +1,58 @@
 <script>
-    $(document).ready(function () {
+  $(document).ready(function () {
+    document.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        var username = $("#username").val();
+        var password = $("#password").val();
 
-        document.addEventListener("keyup", function (event) {
-            if (event.keyCode === 13) {
-                var username = $('#username').val();
-                var password = $('#password').val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "/login/authentication",
-                    data: {
-                        username: username,
-                        password: password
-                    },
-                    success: function (result) {
-                        console.log(result);
-                        if (result.msg == 'success') {
-                            success('Login', 'Login successfully...')
-                            location.replace("/");
-                        }
-                        else {
-                            errormsg('ID & Password not match...');
-                        }
-                    },
-                    error: function (result) {
-                        errormsg(result.msg);
-                    }
-                });
+        $.ajax({
+          type: "POST",
+          url: "/login/authentication",
+          data: {
+            username: username,
+            password: password,
+          },
+          success: function (result) {
+            console.log(result);
+            if (result.msg == "success") {
+              success("Login", "Login successfully...");
+              location.replace("/");
+            } else {
+              errormsg("ID & Password not match...");
             }
+          },
+          error: function (result) {
+            errormsg(result.msg);
+          },
         });
-
-        $(document).on('click', "#loginBtn", function () {
-            var username = $('#username').val();
-            var password = $('#password').val();
-
-            $.ajax({
-                type: "POST",
-                url: "/login/authentication",
-                data: {
-                    username: username,
-                    password: password
-                },
-                success: function (result) {
-                    console.log(result);
-                    if (result.msg == 'success') {
-                        success('Login', 'Login successfully...')
-                        location.replace("/");
-                        console.log(result.data);
-                    }
-                    else {
-                        errormsg('ID & Password not match...');
-                    }
-                },
-                error: function (result) {
-                    errormsg(result.msg);
-                }
-            });
-        });
+      }
     });
+
+    $(document).on("click", "#loginBtn", function () {
+      var username = $("#username").val();
+      var password = $("#password").val();
+
+      $.ajax({
+        type: "POST",
+        url: "/login/authentication",
+        data: {
+          username: username,
+          password: password,
+        },
+        success: function (result) {
+          console.log(result);
+          if (result.msg == "success") {
+            success("Login", "Login successfully...");
+            location.replace("/");
+            console.log(result.data);
+          } else {
+            errormsg("ID & Password not match...");
+          }
+        },
+        error: function (result) {
+          errormsg(result.msg);
+        },
+      });
+    });
+  });
 </script>
