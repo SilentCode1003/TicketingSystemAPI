@@ -1,40 +1,112 @@
-<div class="row">
-    <div class="col-xl-3 col-lg-3 col-sm-3">
-        <div class="entry-area">
-            <select class="entry-input" name="prioritylist" id="prioritylist">
-                <option value="">PRIORITY</option>
-            </select>
-        </div>
+<div class="container-fluid">
 
-        <div class="entry-area">
-            <input class="entry-input" type="text" placeholder="DAY" id="day" name="day">
-        </div>
+    <div class="row mb-2">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                  <select
+                    class="entry-input form-control mb-2"
+                    name="prioritylist"
+                    id="prioritylist"
+                  >
+                    <option value="">- - - Select Priority - - -</option>
+                  </select>
+                </div>
+              </div>
 
-        <div class="entry-area">
-            <input class="entry-input" type="text" placeholder="HOUR" id="hour" name="hour">
-        </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label" for="day">DAY</label>
+                    <input
+                    id="day"
+                    name="day"
+                    type="text"
+                    class="form-control"
+                    placeholder="DAY"
+                    aria-label="day"
+                    aria-describedby="basic-addon1"
+                    />
+                </div>
+            </div>
+  
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label class="form-label" for="hour">HOUR</label>
+                <input
+                  id="hour"
+                  name="hour"
+                  type="text"
+                  class="form-control"
+                  placeholder="HOUR"
+                  aria-label="hour"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+            </div>
 
-        <div class="entry-area">
-            <button id="addBtn" name="addBtn">ADD</button>
+            
+
+            <div class="col-md-4 mt-4">
+              <button
+                id="addBtn"
+                name="addBtn"
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+              >
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
-<hr>
-
-<div>
-    <table id="prioritydue-table">
-        <thead>
-            <th>CODE</th>
-            <th>PRIORITY NAME</th>
-            <th>DAY</th>
-            <th>HOUR</th>
-            <th>STATUS</th>
-            <th>CREATED BY</th>
-            <th>CREATED DATE</th>
-            <th>ACTIONS</th>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+  
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
+          </div>
+          <div class="col-md-6">
+            <input
+              id="search"
+              name="search"
+              type="text"
+              class="form-control"
+              placeholder="Search Concern Name"
+              aria-label="search"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive-sm">
+          <table
+            class="table table-bordered table-sm table-hover"
+            id="prioritydue-table"
+            width="100%"
+            cellspacing="10"
+          >
+            <thead class="table-dark">
+              <tr>
+                <th>CODE</th>
+                <th>PRIORITY NAME</th>
+                <th>DAY</th>
+                <th>HOUR</th>
+                <th>STATUS</th>
+                <th>CREATED BY</th>
+                <th>CREATED DATE</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody class="table-light"></tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
