@@ -131,7 +131,7 @@ router.post("/save", (req, res) => {
     // let duedate = 'number of days base on priority';
     // let statusdetail = 'Due in 3 days';
     let status = dictionary.GetValue(dictionary.ACT());
-    let assignby = "DEV42";
+    let assignby = req.body.assignby;
     let createdate = helper.GetCurrentDatetime();
     let data = [];
     let assign_ticket_details = [];
@@ -508,6 +508,7 @@ router.post("/updateassigndetail", (req, res) => {
   }
 });
 
+//this one need to check
 router.post("/savechild", (req, res) => {
   try {
     let parentid = req.body.parentid;
