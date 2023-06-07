@@ -1,61 +1,140 @@
+<!-- Begin PCreated by Content -->
+<div class="container-fluid">
+  <!-- PCreated by Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-3">
+    <h1 class="page-title">User</h1>
+  </div>
+  <!-- Content Row -->
+  <div class="row mb-2">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <label class="form-label" for="fullname">FULLNAME</label>
+              <input
+                id="fullname"
+                name="fullname"
+                type="text"
+                class="form-control"
+                placeholder="Enter Fullnae"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="employeeError"
+                style="display: none"
+              >
+                Please enter numbers only and exactly 6 characters.
+              </div>
+            </div>
+          </div>
 
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <select
+                class="entry-input form-control mb-2"
+                name="departmentlist"
+                id="departmentlist"
+              >
+                <option value="">- - - Select Department - - -</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="entry-input form-control"
+                name="rolelist"
+                id="rolelist"
+              >
+                <option value="">- - - Select Role - - -</option>
+              </select>
+            </div>
+          </div>
 
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <select
+                class="entry-input form-control mb-2"
+                name="positionlist"
+                id="positionlist"
+              >
+                <option value="">- - - Select Position - - -</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="entry-input form-control mb-2"
+                name="locationlist"
+                id="locationlist"
+              >
+                <option value="">- - - Select Location - - -</option>
+              </select>
+            </div>
+          </div>
 
-
-
-<div class="row">
-    <div class="col-xl-3 col-lg-3 col-sm-3">
-        <div class="entry-area">
-            <input class="entry-input" type="text" placeholder="FULLNAME" id="fullname" name="fullname">
+          <div class="row mb2">
+            <div class="col-md-4 mt-4">
+              <button
+                id="addBtn"
+                name="addBtn"
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+              >
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add
+              </button>
+            </div>
+          </div>
         </div>
-
-        <div class="entry-area">
-            <!-- <input class="entry-input" type="text" placeholder="Position" id="fullname" name="fullname"> -->
-            <select class="entry-input" name="departmentlist" id="departmentlist">
-                <option value="">DEPARTMENT</option>
-            </select>
-        </div>
-        <div class="entry-area">
-            <!-- <input class="entry-input" type="text" placeholder="Position" id="fullname" name="fullname"> -->
-            <select class="entry-input" name="rolelist" id="rolelist">
-                <option value="">ROLE</option>
-            </select>
-        </div>
-        <div class="entry-area">
-            <!-- <input class="entry-input" type="text" placeholder="Position" id="fullname" name="fullname"> -->
-            <select class="entry-input" name="positionlist" id="positionlist">
-                <option value="">Position</option>
-            </select>
-        </div>
-        <div class="entry-area">
-            <!-- <input class="entry-input" type="text" placeholder="Position" id="fullname" name="fullname"> -->
-            <select class="entry-input" name="locationlist" id="locationlist">
-                <option value="">LOCATION</option>
-            </select>
-        </div>
-
-        <div class="entry-area">
-            <button id="addBtn" name="addBtn">ADD</button>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<hr>
-
-<div>
-    <table id="personel-table">
-        <thead>
-            <th>PERSONEL ID</th>
-            <th>FULLNAME</th>
-            <th>DEPARTMENT</th>
-            <th>ROLE</th>
-            <th>POSITION</th>
-            <th>LOCATION</th>
-            <th>STATUS</th>
-            <th>CREATED BY</th>
-            <th>CREATED DATE</th>
-            <th>ACTIONS</th>
-        </thead>
-        <tbody></tbody>
-    </table>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
+      </div>
+      <div class="col-md-6">
+        <input
+          id="search"
+          name="search"
+          type="text"
+          class="form-control"
+          placeholder="Search Employee ID"
+          aria-label="search"
+          aria-describedby="basic-addon1"
+        />
+      </div>
+      <div class="card-body">
+        <div class="table-responsive-sm">
+          <table
+            class="table table-bordered table-sm"
+            id="personel-table"
+            width="100%"
+            cellspacing="10"
+          >
+            <thead>
+              <tr>
+                <th>PERSONEL ID</th>
+                <th>FULLNAME</th>
+                <th>DEPARTMENT</th>
+                <th>ROLE</th>
+                <th>POSITION</th>
+                <th>LOCATION</th>
+                <th>STATUS</th>
+                <th>CREATED BY</th>
+                <th>CREATED DATE</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

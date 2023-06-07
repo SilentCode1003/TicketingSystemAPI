@@ -1,115 +1,185 @@
-<div class="row">
-    <div class="col-xl-4 col-lg-4 col-sm-4">
-        <div class="entry-area">
-            <input type="text" class="entry-input" id="filtername" name="filtername" placeholder="FILTER NAME">
-        </div>
-        <div class="entry-area">
-            <button id="addBtn" name="addBtn">ADD</button>
-        </div>
-    </div>
-    <div class="col-xl-8 col-lg-8 col-sm-8">
-        <div class="entry-group">
-            <div class="grid-container">
-                <div class="grid-item">
-                    <input class="entry-checkbox" type="checkbox" id="isticketid" name="isticketid" checked>
-                    <label for="isticketid">isticketid</label>
-                </div>
-                <div class="grid-item"> <input class="entry-checkbox" type="checkbox" id="issubject" name="issubject"
-                        checked>
-                    <label for="issubject">issubject</label>
-                </div>
-                <div class="grid-item"> <input class="entry-checkbox" type="checkbox" id="isconcern" name="isconcern"
-                        checked>
-                    <label for="isconcern">isconcern</label>
-                </div>
+<div class="container-fluid">
 
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isdescription"
-                        name="isdescription" checked>
-                    <label for="isdescription">isdescription</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="ispriority" name="ispriority"
-                        checked>
-                    <label for="ispriority">ispriority</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isticketstatus"
-                        name="isticketstatus" checked>
-                    <label for="isticketstatus">isticketstatus</label>
-                </div>
+    <div class="row mb-2">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+  
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label class="form-label" for="filtername">FILTER NAME</label>
+                <input
+                  id="filtername"
+                  name="filtername"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Filter Name"
+                  aria-label="filtername"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+            </div>
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                <h4 class="page-title">Settings</h4>
+            </div>
+            <div class="row mb-4 card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="form-label" for="isticketid">isticketid</label>
+                            <input class="entry-checkbox" type="checkbox" id="isticketid" name="isticketid" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="issubject">issubject</label>
+                            <input class="entry-checkbox" type="checkbox" id="issubject" name="issubject" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isconcern">isconcern</label>
+                            <input class="entry-checkbox" type="checkbox" id="isconcern" name="isconcern" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isdescription">isdescription</label>
+                            <input class="entry-checkbox" type="checkbox" id="isdescription" name="isdescription" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="ispriority">ispriority</label>
+                            <input class="entry-checkbox" type="checkbox" id="ispriority" name="ispriority" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isticketstatus">isticketstatus</label>
+                            <input class="entry-checkbox" type="checkbox" id="isticketstatus" name="isticketstatus" checked>
+                        </div>
+                    </div>
 
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isassignto" name="isassignto"
-                        checked>
-                    <label for="isassignto">isassignto</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isdepartment"
-                        name="isdepartment" checked>
-                    <label for="isdepartment">isdepartment</label>
-                </div>
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="form-label" for="isassignto">isassignto</label>
+                            <input class="entry-checkbox" type="checkbox" id="isassignto" name="isassignto" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isdepartment">isdepartment</label>
+                            <input class="entry-checkbox" type="checkbox" id="isdepartment" name="isdepartment" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isissue">isissue</label>
+                            <input class="entry-checkbox" type="checkbox" id="isissue" name="isissue" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isrequestername">isrequestername</label>
+                            <input class="entry-checkbox" type="checkbox" id="isrequestername" name="isrequestername" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isrequesteremail">isrequesteremail</label>
+                            <input class="entry-checkbox" type="checkbox" id="isrequesteremail" name="isrequesteremail" checked>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isdatecreated">isdatecreated</label>
+                            <input class="entry-checkbox" type="checkbox" id="isdatecreated" name="isdatecreated" checked>
+                        </div>
+                    </div>
 
-                <div class="grid-item">
-                    <input class="entry-checkbox" type="checkbox" id="isissue" name="isissue" checked>
-                    <label for="isissue">isissue</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isrequestername"
-                        name="isrequestername" checked>
-                    <label for="isrequestername">isrequestername</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isrequesteremail"
-                        name="isrequesteremail" checked>
-                    <label for="isrequesteremail">isrequesteremail</label>
-                </div>
+                    <div class="row mb-2">
+                        <div class="col-md-2">
+                            <label class="form-label" for="isdatecreated">isdatecreated</label>
+                            <input class="entry-checkbox" type="checkbox" id="isdatecreated" name="isdatecreated" checked>
+                        </div>
 
-                <div class="grid-item">
-                    <input class="entry-checkbox" type="checkbox" id="isdatecreated" name="isdatecreated" checked>
-                    <label for="isdatecreated">isdatecreated</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isduedate" name="isduedate"
-                        checked>
-                    <label for="isduedate">isduedate</label>
-                </div>
-                <div class="grid-item"> <input class="entry-checkbox" type="checkbox" id="isstatusdetail"
-                        name="isstatusdetail" checked>
-                    <label for="isstatusdetail">isstatusdetail</label>
-                </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isduedate">isduedate</label>
+                            <input class="entry-checkbox" type="checkbox" id="isduedate" name="isduedate" checked>
+                        </div>
 
-                <div class="grid-item">
-                    <input class="entry-checkbox" type="checkbox" id="iscomment" name="iscomment" checked>
-                    <label for="iscomment">iscomment</label>
-                </div>
-                <div class="grid-item"><input class="entry-checkbox" type="checkbox" id="isattachement"
-                        name="isattachement" checked>
-                    <label for="isattachement">isattachement</label>
+                        <div class="col-md-2">
+                            <label class="form-label" for="isstatusdetail">isstatusdetail</label>
+                            <input class="entry-checkbox" type="checkbox" id="isstatusdetail" name="isstatusdetail" checked>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label" for="iscomment">iscomment</label>
+                            <input class="entry-checkbox" type="checkbox" id="iscomment" name="iscomment" checked>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label" for="isattachement">isattachement</label>
+                            <input class="entry-checkbox" type="checkbox" id="isattachement" name="isattachement" checked>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="col-md-4 mt-4">
+              <button
+                id="addBtn"
+                name="addBtn"
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+              >
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<hr>
-<div class="row">
-    <table id="filter-table">
-        <thead>
-            <th>CODE</th>
-            <th>FILTER NAME</th>
-            <th>ISTICKETID</th>
-            <th>ISSUBJECT</th>
-            <th>ISCONCERN</th>
-            <th>ISISSUE</th>
-            <th>ISREQUESTERNAME</th>
-            <th>ISREQUESTERMAIL</th>
-            <th>ISDESCRIPTION</th>
-            <th>ISPRIORITY</th>
-            <th>ISTICKETSTATUS</th>
-            <th>ISDATECREATED</th>
-            <th>ISDUEDATE</th>
-            <th>ISSTATUSDETAIL</th>
-            <th>ISASSIGNTO</th>
-            <th>ISDEPARTMENT</th>
-            <th>ISATTACHEMENT</th>
-            <th>ISCOMMENT</th>
-            <th>STATUS</th>
-            <th>CREATED BY</th>
-            <th>CREATED DATE</th>
-            <th>ACTIONS</th>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+  
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
+          </div>
+          <div class="col-md-6">
+            <input
+              id="search"
+              name="search"
+              type="text"
+              class="form-control"
+              placeholder="Search Concern Name"
+              aria-label="search"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive-sm">
+          <table
+            class="table table-bordered table-sm table-hover"
+            id="filter-table"
+            width="100%"
+            cellspacing="10"
+          >
+            <thead class="table-dark">
+              <tr>
+                <th>CODE</th>
+                <th>FILTER NAME</th>
+                <th>ISTICKETID</th>
+                <th>ISSUBJECT</th>
+                <th>ISCONCERN</th>
+                <th>ISISSUE</th>
+                <th>ISREQUESTERNAME</th>
+                <th>ISREQUESTERMAIL</th>
+                <th>ISDESCRIPTION</th>
+                <th>ISPRIORITY</th>
+                <th>ISTICKETSTATUS</th>
+                <th>ISDATECREATED</th>
+                <th>ISDUEDATE</th>
+                <th>ISSTATUSDETAIL</th>
+                <th>ISASSIGNTO</th>
+                <th>ISDEPARTMENT</th>
+                <th>ISATTACHEMENT</th>
+                <th>ISCOMMENT</th>
+                <th>STATUS</th>
+                <th>CREATED BY</th>
+                <th>CREATED DATE</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody class="table-light"></tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
