@@ -296,6 +296,8 @@ router.post("/updateticket", (req, res) => {
         commentdate,
       ]);
 
+      console.log(data);
+
       mysql.InsertTable("ticket_update", data, (err, result) => {
         if (err) console.error("Error: ", err);
 
@@ -303,8 +305,15 @@ router.post("/updateticket", (req, res) => {
       });
 
       let sql_updaterequestticketdetail = `update request_ticket_detail set td_ticketstatus='${newticketstatus}' where td_ticketid='${ticketid}'`;
+      let sql_assigndetails = `update assign_ticket_details set atd_ticketstatus='${newticketstatus}' where atd_ticketid='${ticketid}'`;
 
       mysql.Update(sql_updaterequestticketdetail, (err, result) => {
+        if (err) console.error("Error: ", err);
+
+        console.log(result);
+      });
+
+      mysql.Update(sql_assigndetails, (err, result) => {
         if (err) console.error("Error: ", err);
 
         console.log(result);
@@ -467,6 +476,7 @@ router.get("/getassignticketdetail", (req, res) => {
     from assign_ticket_details
     inner join request_ticket_detail on  atd_ticketid = td_ticketid
     where atd_status='${dictionary.GetValue(dictionary.DND())}'
+    and not atd_ticketstatus in ('OPEN','RESOLVED','CLOSED','PENDING')
     order by atd_ticketid`;
 
     mysql.SelectResult(sql, (err, result) => {
@@ -527,7 +537,7 @@ router.post("/savechild", (req, res) => {
     // let duedate = 'number of days base on priority';
     // let statusdetail = 'Due in 3 days';
     let status = dictionary.GetValue(dictionary.ACT());
-    let assignby = "DEV42";
+    let assignby = req.body.assignby;
     let createdate = helper.GetCurrentDatetime();
     let data = [];
     let assign_ticket_details = [];
