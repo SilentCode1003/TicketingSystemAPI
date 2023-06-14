@@ -164,6 +164,59 @@ router.post("/getrequestticket", (req, res) => {
   }
 });
 
+router.get("/getactivecount", (req, res) => {
+  try {
+    let requestby = req.body.requestby;
+    let status = dictionary.GetValue(dictionary.ACT());
+    let sql = `select count(*) totalactive from client_request_ticket_details where ctrd_requestby='${requestby}' and ctrd_status='${status}'`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/gettopconcern", (req, res) => {
+  try {
+    let requestby = req.body.requestby;
+    let datefrom = req.body.datefrom;
+    let dateto = req.body.dateto;
+    let sql = `select 
+    mct_concernname as concern,
+    count(*) as totalcount
+    from client_request_ticket_details
+    inner join master_concern_type on ctrd_concern = mct_concernname
+    where ctrd_requestdate between '${datefrom}' and '${dateto}'
+    and ctrd_requestby = '${requestby}'
+    group by mct_concernname
+    order by totalcount desc limit 10`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
 //#region
 function GetConcernCode(concernname) {
   try {
