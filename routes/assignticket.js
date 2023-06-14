@@ -471,6 +471,7 @@ router.get("/getassignticketdetail", (req, res) => {
     let sql = `select 
     atd_ticketid as ticketid,
     td_subject as subject,
+    atd_reportdate as reportdate,
     atd_assignto as assignto,
     atd_assignby as assignby
     from assign_ticket_details

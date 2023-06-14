@@ -2,6 +2,10 @@
 <div class="loader-wrapper">
   <div class="spinner"></div>
 </div>
+<!-- LOADER -->
+<div class="loader-wrapper">
+  <span class="loader"><span class="loader-inner"></span></span>
+</div>
 
 <!-- Logout Modal-->
 <div
@@ -45,10 +49,6 @@
   </div>
 </div>
 
-<!-- LOADER -->
-<div class="loader-wrapper">
-  <span class="loader"><span class="loader-inner"></span></span>
-</div>
 <!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -116,7 +116,7 @@
     console.log("hide loader");
     setTimeout(() => {
       $(".loader-wrapper").hide();
-    }, 1000);
+    }, 2000);
   }
 
   $(document).on("click", "#logoutBtn", function () {
