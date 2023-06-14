@@ -333,3 +333,23 @@ exports.AssignTicketDetail = (data) => {
 
   return dataResult;
 };
+
+exports.ClientRequestTicketDetails = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      requestid: key.ctrd_requestid,
+      requestby: key.ctrd_requestby,
+      requestdate: key.ctrd_requestdate,
+      concern: key.ctrd_concern,
+      issue: key.ctrd_issue,
+      description: key.ctrd_description,
+      attachement: key.ctrd_attachement,
+      status: key.ctrd_status,
+      createddate: key.ctrd_createddate,
+    });
+  });
+
+  return dataResult;
+};

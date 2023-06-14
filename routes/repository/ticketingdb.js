@@ -143,6 +143,10 @@ exports.Select = (sql, table, callback) => {
       if (table == "AssignTicketDetail") {
         callback(null, model.AssignTicketDetail(results));
       }
+
+      if (table == "ClientRequestTicketDetails") {
+        callback(null, model.ClientRequestTicketDetails(results));
+      }
     });
   } catch (error) {
     console.log(error);
@@ -559,6 +563,26 @@ exports.InsertTable = (tablename, data, callback) => {
             atd_reportdate,
             atd_status,
             atd_assignby) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "client_request_ticket_details") {
+    let sql = `INSERT INTO client_request_ticket_details(
+                ctrd_requestid,
+                ctrd_requestby,
+                ctrd_requestdate,
+                ctrd_concern,
+                ctrd_issue,
+                ctrd_description,
+                ctrd_attachement,
+                ctrd_status,
+                ctrd_createddate) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {
       if (err) {
