@@ -170,3 +170,24 @@ router.post("/excelsave", (req, res) => {
     });
   }
 });
+
+router.post("/clientinfo", (req, res) => {
+  try {
+    let requestby = req.body.requestby;
+    let sql = `select * from master_client where mc_fullname='${requestby}'`;
+    mysql.Select(sql, "MasterClient", (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});

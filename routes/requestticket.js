@@ -164,6 +164,28 @@ router.post("/getrequestticket", (req, res) => {
   }
 });
 
+router.post("/getrequestticketid", (req, res) => {
+  try {
+    let requestid = req.body.requestid;
+    let sql = `select * from client_request_ticket_details where ctrd_requestid='${requestid}'`;
+
+    mysql.Select(sql, "ClientRequestTicketDetails", (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
 router.get("/getactivecount", (req, res) => {
   try {
     let requestby = req.body.requestby;
@@ -205,6 +227,52 @@ router.post("/gettopconcern", (req, res) => {
       if (err) console.error("Error: ", err);
       console.log(result);
 
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getserviceticket", (req, res) => {
+  try {
+    let requestid = req.body.requestid;
+    let sql = `select ctd_ticketid as ticketid from request_child_ticket_detail where ctd_referenceid='${requestid}'`;
+
+    console.log(requestid);
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/searchrequestid", (req, res) => {
+  try {
+    let requestid = req.body.requestid;
+    let requestby = req.body.requestby;
+    let sql = `select * from client_request_ticket_details where ctrd_requestid='${requestid}' and ctrd_requestby='${requestby}'`;
+
+    mysql.Select(sql, "ClientRequestTicketDetails", (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
       res.json({
         msg: "success",
         data: result,

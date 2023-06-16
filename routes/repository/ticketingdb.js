@@ -147,6 +147,10 @@ exports.Select = (sql, table, callback) => {
       if (table == "ClientRequestTicketDetails") {
         callback(null, model.ClientRequestTicketDetails(results));
       }
+
+      if (table == "RequestChildTicketDetail") {
+        callback(null, model.RequestChildTicketDetail(results));
+      }
     });
   } catch (error) {
     console.log(error);
@@ -583,6 +587,22 @@ exports.InsertTable = (tablename, data, callback) => {
                 ctrd_attachement,
                 ctrd_status,
                 ctrd_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "request_child_ticket_detail") {
+    let sql = `INSERT INTO request_child_ticket_detail(
+              ctd_referenceid,
+              ctd_ticketid,
+              ctd_ticketstatus,
+              ctd_datecreated,
+              ctd_assignedto) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {
       if (err) {

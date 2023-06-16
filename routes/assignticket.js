@@ -36,7 +36,8 @@ router.get("/load", (req, res) => {
   try {
     let resolved = dictionary.GetValue(dictionary.RSD());
     let closed = dictionary.GetValue(dictionary.CLSD());
-    let sql = `select * from request_ticket_detail where not td_ticketstatus in ('${resolved}','${closed}')`;
+    let assigned = dictionary.GetValue(dictionary.ASGN());
+    let sql = `select * from request_ticket_detail where not td_ticketstatus in ('${resolved}','${closed}','${assigned}')`;
 
     mysql.Select(sql, "RequestTicketDetail", (err, result) => {
       if (err) {
@@ -135,6 +136,7 @@ router.post("/save", (req, res) => {
     let createdate = helper.GetCurrentDatetime();
     let data = [];
     let assign_ticket_details = [];
+    let client_request_ticket_details = [];
 
     console.log(attachment);
 
@@ -209,6 +211,158 @@ router.post("/save", (req, res) => {
                         res.json({
                           msg: "success",
                         });
+                      }
+                    );
+                  }
+                );
+              })
+              .catch();
+          })
+          .catch((error) => {});
+      })
+      .catch((error) => {
+        return res.json({
+          msg: error,
+        });
+      });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/savechildticket", (req, res) => {
+  try {
+    let referenceticket = req.body.referenceticket;
+    let concerntype = req.body.concerntype;
+    let issuetype = req.body.issuetype;
+    let requestername = req.body.requestername;
+    let requesteremail = req.body.requesteremail;
+    let description = req.body.description;
+    let prioritytype = req.body.prioritytype;
+    let ticketstatus = req.body.ticketstatus;
+    let assignedto = req.body.assignedto;
+    let attachment =
+      req.body.attachment == undefined ? "NO ATTACHMENT" : req.body.attachment;
+    let department = req.body.department;
+    let comment = req.body.comment;
+    // let duedate = 'number of days base on priority';
+    // let statusdetail = 'Due in 3 days';
+    let status = dictionary.GetValue(dictionary.ACT());
+    let assignby = req.body.assignby;
+    let createdate = helper.GetCurrentDatetime();
+    let data = [];
+    let assign_ticket_details = [];
+    let client_request_ticket_details = [];
+    let request_child_ticket_detail = [];
+
+    console.log(attachment);
+
+    GetConcernCode(concerntype)
+      .then((result) => {
+        let code = result;
+
+        GetCurrentCount(concerntype)
+          .then((result) => {
+            let count = result;
+            let concerncode = code;
+            let currentcount = count + 1;
+            let ticketid = `SR-${helper.GetCurrentYear()}${concerncode}${currentcount}`;
+            let subject = `${concerntype}[${requestername}]${ticketid}`;
+
+            GetDueDate(prioritytype)
+              .then((result) => {
+                let duedate = result;
+                let statusdetail = `Due in ${helper.SubtractDayTime(
+                  moment(createdate).format("YYYY-MM-DD"),
+                  moment(duedate).format("YYYY-MM-DD")
+                )} days`;
+
+                console.log(statusdetail);
+
+                data.push([
+                  ticketid,
+                  subject,
+                  concerntype,
+                  issuetype,
+                  requestername,
+                  requesteremail,
+                  description,
+                  prioritytype,
+                  ticketstatus,
+                  createdate,
+                  duedate,
+                  statusdetail,
+                  assignedto,
+                  department,
+                  attachment,
+                  comment,
+                ]);
+
+                request_child_ticket_detail.push([
+                  referenceticket,
+                  ticketid,
+                  ticketstatus,
+                  createdate,
+                  assignedto,
+                ]);
+
+                assign_ticket_details.push([
+                  createdate,
+                  assignedto,
+                  ticketid,
+                  ticketstatus,
+                  "",
+                  status,
+                  assignby,
+                ]);
+
+                let client_status = dictionary.GetValue(dictionary.ASGN());
+                let sql_update_client_request_ticket_details = `update client_request_ticket_details set ctrd_status=? where ctrd_requestid=?`;
+                client_request_ticket_details.push(
+                  client_status,
+                  referenceticket
+                );
+
+                // console.log(data);
+
+                mysql.InsertTable(
+                  "request_child_ticket_detail",
+                  request_child_ticket_detail,
+                  (err, result) => {
+                    if (err) console.error("Error: ", err);
+                    console.log(result);
+
+                    mysql.InsertTable(
+                      "request_ticket_detail",
+                      data,
+                      (err, result) => {
+                        if (err) console.error("Error: ", err);
+
+                        console.log(result);
+
+                        mysql.InsertTable(
+                          "assign_ticket_details",
+                          assign_ticket_details,
+                          (err, result) => {
+                            if (err) console.error("Error: ", err);
+                            console.log(result);
+
+                            mysql.UpdateMultiple(
+                              sql_update_client_request_ticket_details,
+                              client_request_ticket_details,
+                              (err, result) => {
+                                if (err) console.error("Error: ", err);
+                                console.log(result);
+
+                                res.json({
+                                  msg: "success",
+                                });
+                              }
+                            );
+                          }
+                        );
                       }
                     );
                   }
@@ -519,123 +673,6 @@ router.post("/updateassigndetail", (req, res) => {
   }
 });
 
-//this one need to check
-router.post("/savechild", (req, res) => {
-  try {
-    let parentid = req.body.parentid;
-    let concerntype = req.body.concerntype;
-    let issuetype = req.body.issuetype;
-    let requestername = req.body.requestername;
-    let requesteremail = req.body.requesteremail;
-    let description = req.body.description;
-    let prioritytype = req.body.prioritytype;
-    let ticketstatus = req.body.ticketstatus;
-    let assignedto = req.body.assignedto;
-    let attachment =
-      req.body.attachment == undefined ? "NO ATTACHMENT" : req.body.attachment;
-    let department = req.body.department;
-    let comment = req.body.comment;
-    // let duedate = 'number of days base on priority';
-    // let statusdetail = 'Due in 3 days';
-    let status = dictionary.GetValue(dictionary.ACT());
-    let assignby = req.body.assignby;
-    let createdate = helper.GetCurrentDatetime();
-    let data = [];
-    let assign_ticket_details = [];
-
-    console.log(attachment);
-
-    GetConcernCode(concerntype)
-      .then((result) => {
-        let code = result;
-
-        GetCurrentCount(concerntype)
-          .then((result) => {
-            let count = result;
-            let concerncode = code;
-            let currentcount = count + 1;
-            let ticketid = `SR-${helper.GetCurrentYear()}${concerncode}${currentcount}`;
-            let subject = `${concerntype}[${requestername}]${ticketid}`;
-
-            GetDueDate(prioritytype)
-              .then((result) => {
-                let duedate = result;
-                let statusdetail = `Due in ${helper.SubtractDayTime(
-                  moment(createdate).format("YYYY-MM-DD"),
-                  moment(duedate).format("YYYY-MM-DD")
-                )} days`;
-
-                console.log(statusdetail);
-
-                data.push([
-                  ticketid,
-                  subject,
-                  concerntype,
-                  issuetype,
-                  requestername,
-                  requesteremail,
-                  description,
-                  prioritytype,
-                  ticketstatus,
-                  createdate,
-                  duedate,
-                  statusdetail,
-                  assignedto,
-                  department,
-                  attachment,
-                  comment,
-                ]);
-
-                assign_ticket_details.push([
-                  createdate,
-                  assignedto,
-                  ticketid,
-                  ticketstatus,
-                  "",
-                  status,
-                  assignby,
-                ]);
-
-                // console.log(data);
-
-                mysql.InsertTable(
-                  "request_ticket_detail",
-                  data,
-                  (err, result) => {
-                    if (err) console.error("Error: ", err);
-
-                    console.log(result);
-
-                    mysql.InsertTable(
-                      "assign_ticket_details",
-                      assign_ticket_details,
-                      (err, result) => {
-                        if (err) console.error("Error: ", err);
-                        console.log(result);
-
-                        res.json({
-                          msg: "success",
-                        });
-                      }
-                    );
-                  }
-                );
-              })
-              .catch();
-          })
-          .catch((error) => {});
-      })
-      .catch((error) => {
-        return res.json({
-          msg: error,
-        });
-      });
-  } catch (error) {
-    res.json({
-      msg: error,
-    });
-  }
-});
 //#region FUNCTION
 function GetConcernCode(concernname) {
   try {

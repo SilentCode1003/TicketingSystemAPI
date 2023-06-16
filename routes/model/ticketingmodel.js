@@ -353,3 +353,19 @@ exports.ClientRequestTicketDetails = (data) => {
 
   return dataResult;
 };
+
+exports.RequestChildTicketDetail = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      referenceid: key.ctd_referenceid,
+      ticketid: key.ctd_ticketid,
+      ticketstatus: key.ctd_ticketstatus,
+      datecreated: key.ctd_datecreated,
+      assignedto: key.ctd_assignedto,
+    });
+  });
+
+  return dataResult;
+};
