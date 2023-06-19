@@ -5,6 +5,7 @@ const mysql = require("./repository/ticketingdb");
 const helper = require("./repository/customhelper");
 const dictionary = require("./repository/dictionary");
 const crypt = require("./repository/cryptography");
+const { json } = require("body-parser");
 
 function isAuthAdmin(req, res, next) {
   if (
@@ -336,6 +337,41 @@ router.post("/getallrequestticket", (req, res) => {
       msg: error,
     });
   }
+});
+
+router.post("/getserviceticketstatus", (req, res) => {
+  try {
+    let requestby = req.body.requestby;
+    let status = dictionary.GetValue(dictionary.CLSD());
+    let sql = `select 
+    ctrd_requestid as requestid,
+    ctd_ticketid as ticketid,
+    ctrd_requestdate as requestdate, 
+    ctrd_concern as concern,
+    ctrd_issue as issue,
+    td_datecreated as datecreated,
+    ctd_assignedto as assignto,
+    td_priority as priority,
+    td_ticketstatus as ticketstatus,
+    td_duedate as duedate
+    from client_request_ticket_details
+    inner join request_child_ticket_detail on ctrd_requestid = ctd_referenceid
+    inner join request_ticket_detail on ctd_ticketid = td_ticketid
+    where ctrd_requestby = '${requestby}'
+    and not td_ticketstatus='${status}'
+    order by ctrd_requestid`;
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {}
 });
 
 //#region
