@@ -460,8 +460,18 @@ router.post("/updateticket", (req, res) => {
 
       let sql_updaterequestticketdetail = `update request_ticket_detail set td_ticketstatus='${newticketstatus}' where td_ticketid='${ticketid}'`;
       let sql_assigndetails = `update assign_ticket_details set atd_ticketstatus='${newticketstatus}' where atd_ticketid='${ticketid}'`;
+      let request_child_ticket_detail = `update request_child_ticket_detail set ctd_ticketstatus='${newticketstatus}' where ctd_ticketid='${ticketid}'`;
+      
+
+      let sql_get_ir_id = `select ctd_referenceid as refereceid from request_child_ticket_detail where ctd_ticketid='${ticketid}'`;
 
       mysql.Update(sql_updaterequestticketdetail, (err, result) => {
+        if (err) console.error("Error: ", err);
+
+        console.log(result);
+      });
+
+      mysql.Update(request_child_ticket_detail, (err, result) => {
         if (err) console.error("Error: ", err);
 
         console.log(result);
@@ -471,6 +481,21 @@ router.post("/updateticket", (req, res) => {
         if (err) console.error("Error: ", err);
 
         console.log(result);
+      });
+
+      mysql.SelectResult(sql_get_ir_id, (err, result) => {
+        if (err) console.error(err);
+        console.log(result);
+
+        let referenceid = result[0].refereceid;
+
+        let client_request_ticket_details = `update client_request_ticket_details set ctrd_status='${newticketstatus}' where ctrd_requestid='${referenceid}'`;
+        mysql.Update(client_request_ticket_details, (err, result) => {
+          if (err) console.error("Error: ", err);
+  
+          console.log(result);
+        });
+
       });
 
       res.json({
