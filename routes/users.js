@@ -118,21 +118,35 @@ router.post("/save", (req, res) => {
 router.post("/update", (req, res) => {
   try {
     let fullname = req.body.fullname;
-    let password = req.body.password;
+    let oldpassword = req.body.oldpassword;
+    let newpassword = req.body.newpassword;
 
-    crypt.Encrypter(password, (err, encrypted) => {
+    crypt.Encrypter(oldpassword, (err, oldencrpty) => {
       if (err) console.error("Error: ", err);
-      let sql = `update master_user set mu_password='${encrypted}' where mu_fullname='${fullname}'`;
+      let sql_check = `select * from master_user where mu_fullname='${fullname}' and mu_password='${oldencrpty}'`;
 
-      console.log(encrypted);
+      mysql.isDataExist(sql_check, "MasterUser").then((result) => {
+        if (!result) {
+          res.json({
+            msg: "incorrect",
+          });
+        } else {
+          crypt.Encrypter(newpassword, (err, encrypted) => {
+            if (err) console.error("Error: ", err);
+            let sql = `update master_user set mu_password='${encrypted}' where mu_fullname='${fullname}'`;
 
-      mysql.Update(sql, (err, result) => {
-        if (err) console.error("Error: ", err);
+            console.log(encrypted);
 
-        console.log(result);
-        res.json({
-          msg: "success",
-        });
+            mysql.Update(sql, (err, result) => {
+              if (err) console.error("Error: ", err);
+
+              console.log(result);
+              res.json({
+                msg: "success",
+              });
+            });
+          });
+        }
       });
     });
   } catch (error) {

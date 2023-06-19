@@ -612,3 +612,29 @@ exports.InsertTable = (tablename, data, callback) => {
     });
   }
 };
+
+exports.isDataExist = (sql, tablename) => {
+  return new Promise((resolve, reject) => {
+    this.Select(sql, tablename, (err, result) => {
+      if (err) reject(err);
+
+      if (result.length != 0) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    });
+  });
+};
+
+exports.isSingleDataExist = (sql, tablename, callback) => {
+  this.Select(sql, tablename, (err, result) => {
+    if (err) callback(err, null);
+
+    if (result.length != 0) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  });
+};

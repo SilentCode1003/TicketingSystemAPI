@@ -192,3 +192,63 @@ router.post("/clientinfo", (req, res) => {
   }
 });
 
+router.post("/updateinfo", (req, res) => {
+  try {
+    let fullname = req.body.fullname;
+    let email = req.body.email;
+    let contactnumber = req.body.contactnumber;
+    let sql = `update master_client set mc_email='${email}', mc_contactnumber='${contactnumber}' where mc_fullname='${fullname}'`;
+
+    mysql.Update(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+      res.json({
+        msg: "success",
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/updatepassword", (req, res) => {
+  try {
+    let fullname = req.body.fullname;
+    let oldpassword = req.body.oldpassword;
+    let newpassword = req.body.newpassword;
+
+    crypt.Encrypter(oldpassword, (err, oldencrypt) => {
+      if (err) console.error("Error: ", err);
+      let sql_check = `select * from master_client where mc_fullname='${fullname}' and mc_password='${oldencrypt}'`;
+
+      mysql.isDataExist(sql_check, "MasterClient").then((result) => {
+        if (!result) {
+          return res.json({
+            msg: "incorrect",
+          });
+        } else {
+          crypt.Encrypter(newpassword, (err, encrypted) => {
+            if (err) console.error("Error: ", err);
+
+            let sql = `update master_client set mc_password='${encrypted}' where mc_fullname='${fullname}'`;
+            mysql.Update(sql, (err, result) => {
+              if (err) console.error("Error: ", err);
+
+              console.log(result);
+              res.json({
+                msg: "success",
+              });
+            });
+          });
+        }
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});

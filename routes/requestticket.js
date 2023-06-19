@@ -5,7 +5,6 @@ const mysql = require("./repository/ticketingdb");
 const helper = require("./repository/customhelper");
 const dictionary = require("./repository/dictionary");
 const crypt = require("./repository/cryptography");
-const { json } = require("body-parser");
 
 function isAuthAdmin(req, res, next) {
   if (
