@@ -626,6 +626,7 @@ exports.InsertTable = (tablename, data, callback) => {
               kb_category,
               kb_content,
               kb_attachment,
+              kb_status,
               kb_postby,
               kb_postdate) VALUES ?`;
 
@@ -639,7 +640,6 @@ exports.InsertTable = (tablename, data, callback) => {
 
   if (tablename == "master_category") {
     let sql = `INSERT INTO master_category(
-                mc_categorycode,
                 mc_categoryname,
                 mc_status,
                 mc_createdby,

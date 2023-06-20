@@ -380,6 +380,7 @@ exports.KnowledgeBase = (data) => {
       category: key.kb_category,
       content: key.kb_content,
       attachment: key.kb_attachment,
+      status: key.kb_status,
       postby: key.kb_postby,
       postdate: key.kb_postdate,
     });
