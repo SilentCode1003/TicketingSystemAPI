@@ -34,6 +34,51 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from knowledge_base`;
+
+    mysql.Select(sql, KnowledgeBase, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/save", (req, res) => {
+  try {
+    let title = req.body.title;
+    let category = req.body.category;
+    let content = req.body.content;
+    let attachement = req.body.attachement;
+    let status = dictionary.GetValue(dictionary.ACT());
+    let postby = req.body.postby;
+    let postdate = helper.GetCurrentDatetime();
+    let knowledge_base = [];
+
+    knowledge_base.push([
+      title,
+      category,
+      content,
+      attachement,
+      status,
+      postby,
+      postdate,
+    ]);
+
+    mysql.InsertTable("knowledge_base", knowledge_base, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+      res.json({
+        msg: "success",
+      });
+    });
   } catch (error) {
     res.json({
       msg: error,
