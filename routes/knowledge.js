@@ -20,7 +20,7 @@ function isAuthAdmin(req, res, next) {
 
 /* GET home page. */
 router.get("/", isAuthAdmin, function (req, res, next) {
-  res.render("knowledgebase", {
+  res.render("knowledge", {
     title: req.session.title,
     username: req.session.username,
     fullname: req.session.fullname,
@@ -60,6 +60,7 @@ router.post("/save", (req, res) => {
     let postby = req.body.postby;
     let postdate = helper.GetCurrentDatetime();
     let knowledge_base = [];
+    let master_category = [];
 
     knowledge_base.push([
       title,
@@ -70,6 +71,40 @@ router.post("/save", (req, res) => {
       postby,
       postdate,
     ]);
+
+    let sql_check = `select * from master_category where mc_categoryname='${category}'`;
+    mysql
+      .isDataExist(sql_check, "MasterCategory")
+      .then((result) => {
+        if (result) {
+          //not new data
+        } else {
+          //new data
+          let createddate = postdate;
+          let createdby = postby;
+          master_category.push({
+            category,
+            status,
+            createdby,
+            createddate,
+          });
+
+          mysql.InsertTable(
+            "master_category",
+            master_category,
+            (err, result) => {
+              if (err) console.error("Error: ", err);
+
+              console.log(result);
+            }
+          );
+        }
+      })
+      .catch((error) => {
+        return res.json({
+          msg: error,
+        });
+      });
 
     mysql.InsertTable("knowledge_base", knowledge_base, (err, result) => {
       if (err) console.error("Error: ", err);

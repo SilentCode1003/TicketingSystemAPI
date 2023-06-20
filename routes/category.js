@@ -20,7 +20,7 @@ function isAuthAdmin(req, res, next) {
 
 /* GET home page. */
 router.get("/", isAuthAdmin, function (req, res, next) {
-  res.render("knowledgebase", {
+  res.render("category", {
     title: req.session.title,
     username: req.session.username,
     fullname: req.session.fullname,

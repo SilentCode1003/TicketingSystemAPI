@@ -30,7 +30,7 @@ var dueRouter = require("./routes/due");
 var filterRouter = require("./routes/filter");
 var ticketcommentRouter = require("./routes/ticketcomment");
 var requestticketRouter = require("./routes/requestticket");
-var knowledgebaseRouter = require("./routes/knowledgebase");
+var knowledgeRouter = require("./routes/knowledge");
 var categoryRouter = require("./routes/category");
 
 var app = express();
@@ -89,7 +89,7 @@ app.use("/due", dueRouter);
 app.use("/filter", filterRouter);
 app.use("/ticketcomment", ticketcommentRouter);
 app.use("/requestticket", requestticketRouter);
-app.use("/knowledgebase", knowledgebaseRouter);
+app.use("/knowledge", knowledgeRouter);
 app.use("/category", categoryRouter);
 
 app.use(
