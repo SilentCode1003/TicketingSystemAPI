@@ -369,3 +369,37 @@ exports.RequestChildTicketDetail = (data) => {
 
   return dataResult;
 };
+
+exports.KnowledgeBase = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      postid: key.kb_postid,
+      title: key.kb_title,
+      category: key.kb_category,
+      content: key.kb_content,
+      attachment: key.kb_attachment,
+      postby: key.kb_postby,
+      postdate: key.kb_postdate,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.MasterCategory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      categorycode: key.mc_categorycode,
+      categoryname: key.mc_categoryname,
+      status: key.mc_status,
+      createdby: key.mc_createdby,
+      createddate: key.mc_createddate,
+    });
+  });
+
+  return dataResult;
+};

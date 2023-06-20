@@ -151,6 +151,14 @@ exports.Select = (sql, table, callback) => {
       if (table == "RequestChildTicketDetail") {
         callback(null, model.RequestChildTicketDetail(results));
       }
+
+      if (table == "KnowledgeBase") {
+        callback(null, model.KnowledgeBase(results));
+      }
+
+      if (table == "MasterCategory") {
+        callback(null, model.MasterCategory(results));
+      }
     });
   } catch (error) {
     console.log(error);
@@ -603,6 +611,39 @@ exports.InsertTable = (tablename, data, callback) => {
               ctd_ticketstatus,
               ctd_datecreated,
               ctd_assignedto) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "knowledge_base") {
+    let sql = `INSERT INTO knowledge_base(
+              kb_title,
+              kb_category,
+              kb_content,
+              kb_attachment,
+              kb_postby,
+              kb_postdate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_category") {
+    let sql = `INSERT INTO master_category(
+                mc_categorycode,
+                mc_categoryname,
+                mc_status,
+                mc_createdby,
+                mc_createddate) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {
       if (err) {
