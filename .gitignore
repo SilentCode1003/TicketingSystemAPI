@@ -1,0 +1,30 @@
+# Dependency directories
+node_modules/
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Mac OS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+
+# Compiled binary addons (optional)
+*.node
+
+# Yarn PnP file (optional)
+.pnp.*

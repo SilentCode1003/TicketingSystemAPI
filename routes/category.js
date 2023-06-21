@@ -35,7 +35,7 @@ router.get("/load", (req, res) => {
   try {
     let sql = `select * from master_category`;
 
-    mysql.Select(sql, MasterCategory, (err, result) => {
+    mysql.Select(sql, "MasterCategory", (err, result) => {
       if (err) console.error("Error: ", err);
 
       res.json({

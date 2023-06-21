@@ -35,7 +35,7 @@ router.get("/load", (req, res) => {
   try {
     let sql = `select * from knowledge_base`;
 
-    mysql.Select(sql, KnowledgeBase, (err, result) => {
+    mysql.Select(sql, "KnowledgeBase", (err, result) => {
       if (err) console.error("Error: ", err);
 
       res.json({
@@ -55,7 +55,7 @@ router.post("/save", (req, res) => {
     let title = req.body.title;
     let category = req.body.category;
     let content = req.body.content;
-    let attachement = req.body.attachement;
+    let attachements = req.body.attachements;
     let status = dictionary.GetValue(dictionary.ACT());
     let postby = req.body.postby;
     let postdate = helper.GetCurrentDatetime();
@@ -66,7 +66,7 @@ router.post("/save", (req, res) => {
       title,
       category,
       content,
-      attachement,
+      attachements,
       status,
       postby,
       postdate,
@@ -82,12 +82,7 @@ router.post("/save", (req, res) => {
           //new data
           let createddate = postdate;
           let createdby = postby;
-          master_category.push({
-            category,
-            status,
-            createdby,
-            createddate,
-          });
+          master_category.push([category, status, createdby, createddate]);
 
           mysql.InsertTable(
             "master_category",
