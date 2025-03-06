@@ -24,7 +24,7 @@ crypt.Encrypter("#Ebedaf19dd0d", (err, result) => {
   console.log(result);
 });
 
-// crypt.Decrypter('f6a3287039d0d75cb83cb29d35b3dfcb', (err, result) => {
+// crypt.Decrypter('9bc4ed7bfc29a2746d65bdb25f3b1748', (err, result) => {
 //     if (err) console.error('Error: ', err);
 
 //     console.log(`${result}`);

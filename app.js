@@ -36,13 +36,13 @@ var categoryRouter = require("./routes/category");
 var app = express();
 
 //mongodb
-mongoose.connect("mongodb://localhost:27017/Ticketing").then((res) => {
+mongoose.connect(process.env._MONGO_URI).then((res) => {
   console.log("MongoDB Connected!");
 });
 
 const store = new MongoDBSession({
-  uri: "mongodb://localhost:27017/Ticketing",
-  collection: "TicketingSessions",
+  uri: process.env._MONGO_URI,
+  collection: process.env._MONGO_COLLECTION,
 });
 
 //Session
